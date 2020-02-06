@@ -67,7 +67,9 @@ export default props => {
                     ... venueWebsite.current.value && { website: venueWebsite.current.value},
                     ... venueFacebook.current.value && { facebook: venueFacebook.current.value},
                     ... venueInstagram.current.value && { instagram: venueInstagram.current.value},
-                    ... venueTwitter.current.value && { twitter: venueTwitter.current.value}
+                    ... venueTwitter.current.value && { twitter: venueTwitter.current.value},
+                    ... venueBlurb.current.value && { blurb: venueBlurb.current.value},
+                    ... venueBlurb.current.value && { blurbPublic: blurbPublic}
                 })
                     .then(() => props.history.push(`/venueProfiles/${profile.id}`))
             } else {
@@ -89,7 +91,9 @@ export default props => {
                     ... venueWebsite.current.value && { webPublic: webPublic},
                     ... venueFacebook.current.value && { facebook: venueFacebook.current.value},
                     ... venueInstagram.current.value && { instagram: venueInstagram.current.value},
-                    ... venueTwitter.current.value && { twitter: venueTwitter.current.value}
+                    ... venueTwitter.current.value && { twitter: venueTwitter.current.value},
+                    ... venueBlurb.current.value && { blurb: venueBlurb.current.value},
+                    ... venueBlurb.current.value && { blurbPublic: blurbPublic}
                 })
                     .then(() => props.history.push(`/venueProfiles/${profile.id}`))
             }
@@ -124,7 +128,7 @@ export default props => {
                 <legend>All Ages?</legend>
                 <div className="form-group">
                 <label for="yes"> 
-                    <input type="radio" name="yes" value="true" onChange={() => {
+                    <input type="radio" name="yes" value="true" checked="true" onChange={() => {
                         let yes = "yes"
                         setAllAges(yes)
                     }}/>
@@ -166,7 +170,7 @@ export default props => {
                             Yes 
                         </label>
                         <label for="no"> 
-                            <input type="radio" name="no" value="false" onChange={() => {
+                            <input type="radio" name="no" value="false" checked="true" onChange={() => {
                                 let falseness = false
                                 setAddressPublic(falseness)
                             }}/>
@@ -196,7 +200,7 @@ export default props => {
                             Yes 
                         </label>
                         <label for="no"> 
-                            <input type="radio" name="no" value="false" onChange={() => {
+                            <input type="radio" name="no" value="false" checked="true" onChange={() => {
                                 let falseness = false
                                 setAddressPublic2(falseness)
                             }}/>
@@ -259,7 +263,7 @@ export default props => {
                         Yes 
                     </label>
                     <label for="no"> 
-                        <input type="radio" name="no" value="false" onChange={() => {
+                        <input type="radio" name="no" value="false" checked="true" onChange={() => {
                             let falseness = false
                             setZipPublic(falseness)
                         }}/>
@@ -274,24 +278,28 @@ export default props => {
                     <label htmlFor="website">Website: </label>
                     <input type="text" name="website" autoFocus className="form-control"
                         placeholder=""
+                        defaultValue={profile.website}
                         // onChange={handleControlledInputChange}
                         ref={venueWebsite}
                     />
                     <label htmlFor="facebook">Facebook: </label>
                     <input type="text" name="facebook" autoFocus className="form-control"
                         placeholder=""
+                        defaultValue={profile.facebook}
                         // onChange={handleControlledInputChange}
                         ref={venueFacebook}
                     />
                     <label htmlFor="instagram">Instagram: </label>
                     <input type="text" name="instagram" autoFocus className="form-control"
                         placeholder=""
+                        defaultValue={profile.instagram}
                         // onChange={handleControlledInputChange}
                         ref={venueInstagram}
                     />
                     <label htmlFor="twitter">Twitter: </label>
                     <input type="text" name="twitter" autoFocus className="form-control"
                         placeholder=""
+                        defaultValue={profile.twitter}
                         // onChange={handleControlledInputChange}
                         ref={venueTwitter}
                     />
@@ -307,7 +315,7 @@ export default props => {
                         Yes 
                     </label>
                     <label for="no"> 
-                        <input type="radio" name="no" value="false" onChange={() => {
+                        <input type="radio" name="no" value="false" checked="true" onChange={() => {
                             let falseness = false
                             setWebPublic(falseness)
                         }}/>

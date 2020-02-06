@@ -79,6 +79,14 @@ export default (props) => {
         }
     }
 
+    let venueBlurb = ""
+
+    if (profile.blurb && profile.blurbPublic) {
+        venueBlurb = <>
+        <div className="venue__blurb"> { profile.blurb } </div>
+        </>
+    }
+
     return (
         <section className="venueProfile">
             <h3 className="venue__name"> { profile.name } </h3>
@@ -97,6 +105,7 @@ export default (props) => {
                 {venueInstagram}
                 {venueTwitter}
             </div>
+            {venueBlurb}
         </section>
     )
 
