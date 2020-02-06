@@ -63,13 +63,13 @@ export default props => {
                     ... venueAddressLine2.current.value && { address2Public: addressPublic2 },
                     ... venueZip.current.value && { zip: venueZip.current.value },
                     ... venueZip.current.value && { zipPublic: zipPublic },
-                    ... venueWebsite.current.value && { websitePublic: webPublic},
+                    webPublic: webPublic,
                     ... venueWebsite.current.value && { website: venueWebsite.current.value},
                     ... venueFacebook.current.value && { facebook: venueFacebook.current.value},
                     ... venueInstagram.current.value && { instagram: venueInstagram.current.value},
                     ... venueTwitter.current.value && { twitter: venueTwitter.current.value},
                     ... venueBlurb.current.value && { blurb: venueBlurb.current.value},
-                    ... venueBlurb.current.value && { blurbPublic: blurbPublic}
+                    blurbPublic: blurbPublic
                 })
                     .then(() => props.history.push(`/venueProfiles/${profile.id}`))
             } else {
@@ -87,13 +87,13 @@ export default props => {
                     ... venueAddressLine2.current.value && { address2Public: addressPublic2 },
                     ... venueZip.current.value && { zip: venueZip.current.value },
                     ... venueZip.current.value && { zipPublic: zipPublic },
+                    webPublic: webPublic,
                     ... venueWebsite.current.value && { website: venueWebsite.current.value},
-                    ... venueWebsite.current.value && { webPublic: webPublic},
                     ... venueFacebook.current.value && { facebook: venueFacebook.current.value},
                     ... venueInstagram.current.value && { instagram: venueInstagram.current.value},
                     ... venueTwitter.current.value && { twitter: venueTwitter.current.value},
                     ... venueBlurb.current.value && { blurb: venueBlurb.current.value},
-                    ... venueBlurb.current.value && { blurbPublic: blurbPublic}
+                    blurbPublic: blurbPublic
                 })
                     .then(() => props.history.push(`/venueProfiles/${profile.id}`))
             }
@@ -352,7 +352,7 @@ export default props => {
             <button type="submit"
                 onClick={evt => {
                     evt.preventDefault()
-                    constructNewAnimal()
+                    constructNewProfile()
                 }}
                 className="btn btn-primary">
                 {editMode ? "Save changes" : "Save profile"}

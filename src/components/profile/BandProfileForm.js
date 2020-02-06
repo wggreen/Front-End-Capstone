@@ -52,34 +52,38 @@ export default props => {
                     size: bandSize.current.value,
                     city: bandCity.current.value,
                     state: bandState.current.value,
-                    ... venueAddress.current.value && { address: venueAddress.current.value },
-                    
+                    ... bandWebsite.current.value && { website: bandWebsite.current.value },
+                    ... bandBandcamp.current.value && { bandcamp: bandBandcamp.current.value },
+                    ... bandYoutube.current.value && { youtube: bandYoutube.current.value },
+                    ... bandFacebook.current.value && { facebook: bandFacebook.current.value },
+                    ... bandInstagram.current.value && { instagram: bandInstagram.current.value },
+                    ... bandTwitter.current.value && { twitter: bandTwitter.current.value },
+                    ... bandSpotify.current.value && { spotify: bandSpotify.current.value },
+                    webPublic: webPublic,
+                    ... bandBlurb.current.value && { blurb: bandBlurb.current.value },
+                    blurbPublic: blurbPublic
                 })
-                    .then(() => props.history.push(`/venueProfiles/${profile.id}`))
+                    .then(() => props.history.push(`/bandProfiles/${profile.id}`))
             } else {
                 addProfile({
                     id: profile.id,
                     userId: parseInt(props.match.params.profileId, 10),
-                    name: venueName.current.value,
-                    capacity: venueCapacity.current.value,
-                    allAges: allAges,
-                    ... venueAddress.current.value && { address: venueAddress.current.value },
-                    ... venueAddress.current.value && { addressPublic: addressPublic },
-                    city: venueCity.current.value,
-                    state: venueState.current.value,
-                    ... venueAddressLine2.current.value && { address2: venueAddressLine2.current.value },
-                    ... venueAddressLine2.current.value && { address2Public: addressPublic2 },
-                    ... venueZip.current.value && { zip: venueZip.current.value },
-                    ... venueZip.current.value && { zipPublic: zipPublic },
-                    ... venueWebsite.current.value && { website: venueWebsite.current.value},
-                    ... venueWebsite.current.value && { webPublic: webPublic},
-                    ... venueFacebook.current.value && { facebook: venueFacebook.current.value},
-                    ... venueInstagram.current.value && { instagram: venueInstagram.current.value},
-                    ... venueTwitter.current.value && { twitter: venueTwitter.current.value},
-                    ... venueBlurb.current.value && { blurb: venueBlurb.current.value},
-                    ... venueBlurb.current.value && { blurbPublic: blurbPublic}
+                    name: bandName.current.value,
+                    size: bandSize.current.value,
+                    city: bandCity.current.value,
+                    state: bandState.current.value,
+                    ... bandWebsite.current.value && { website: bandWebsite.current.value },
+                    ... bandBandcamp.current.value && { bandcamp: bandBandcamp.current.value },
+                    ... bandYoutube.current.value && { youtube: bandYoutube.current.value },
+                    ... bandFacebook.current.value && { facebook: bandFacebook.current.value },
+                    ... bandInstagram.current.value && { instagram: bandInstagram.current.value },
+                    ... bandTwitter.current.value && { twitter: bandTwitter.current.value },
+                    ... bandSpotify.current.value && { spotify: bandSpotify.current.value },
+                    webPublic: webPublic,
+                    ... bandBlurb.current.value && { blurb: bandBlurb.current.value },
+                    blurbPublic: blurbPublic
                 })
-                    .then(() => props.history.push(`/venueProfiles/${profile.id}`))
+                    .then(() => props.history.push(`/bandProfiles/${profile.id}`))
             }
     }
 
@@ -115,7 +119,7 @@ export default props => {
                         placeholder=""
                         // onChange={handleControlledInputChange}
                         ref={bandCity}
-                        defaultValue={venue.city}
+                        defaultValue={profile.city}
                     />
                 </div>
             </fieldset>
@@ -235,7 +239,7 @@ export default props => {
             <button type="submit"
                 onClick={evt => {
                     evt.preventDefault()
-                    constructNewAnimal()
+                    constructNewProfile()
                 }}
                 className="btn btn-primary">
                 {editMode ? "Save changes" : "Save profile"}
