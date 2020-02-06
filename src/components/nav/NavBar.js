@@ -1,7 +1,19 @@
 import React from "react"
 import { Link } from "react-router-dom"
+import { ProfileContext } from "../profile/ProfileProvider"
 
 export default (props) => {
+
+    const { profiles } = useContext(ProfileContext)
+
+    let userId = parseInt(localStorage.getItem("capstone_user"), 10)
+
+    let chosenProfile = profiles.find(profile => profile.userId === userId) || {}
+
+    let chosenProfileId = chosenProfile.userId
+    
+    `/venueProfiles/${profile.id}`
+
 
     // Not logged in home nav
     if (localStorage.getItem("capstone_user") === null && props.location.pathname == "/") {
@@ -42,7 +54,7 @@ export default (props) => {
                     <Link className="navbar__link" to="/messages">Messages</Link>
                 </li>
                 <li className="navbar__item">
-                    <Link className="navbar__link" to="/profile">Profile</Link>
+                    <Link className="navbar__link" to={`/venueProfiles/${chosenProfileId}`}>Profile</Link>
                 </li>
                 <li className="navbar__item">
                     <Link className="navbar__link" to="/" onClick={e => {
@@ -71,6 +83,9 @@ export default (props) => {
                 </li>
                 <li className="navbar__item">
                     <Link className="navbar__link" to="/tours">Tours</Link>
+                </li>
+                <li className="navbar__item">
+                    <Link className="navbar__link" to={`/bandProfiles/${chosenProfileId}`}>Profile</Link>
                 </li>
                 <li className="navbar__item">
                     <Link className="navbar__link" to="/" onClick={e => {

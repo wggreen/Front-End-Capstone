@@ -7,8 +7,10 @@ const Register = props => {
     const verifyEmail = useRef()
     const password = useRef()
     const verifyPassword = useRef()
+
     const userType = useRef()
     const [verifyEmailResult, setVerifyEmailResult] = useState(false)
+    const [userType, setUserType] = useState()
 
     const existingUserCheck = () => {
         return fetch(`http://localhost:8088/users?username=${username.current.value}`)
@@ -58,7 +60,7 @@ const Register = props => {
                                                 email: email.current.value,
                                                 password: password.current.value,
                                                 username: username.current.value,
-                                                userTypeId: parseInt(userType.current.value, 10)
+                                                userTypeId: userType
                                             })
                                         })
                                             .then(res => res.json())
@@ -140,7 +142,7 @@ const Register = props => {
                         placeholder=""
                         required />
                 </fieldset>
-                <fieldset className="selectTypeContainer registerFieldset">
+                {/* <fieldset className="selectTypeContainer registerFieldset">
                     <label htmlFor="select">What type of account do you need? </label>
                     <select className="dropdown" id="userDropdown" name="select"
                         ref={userType}>
@@ -148,6 +150,25 @@ const Register = props => {
                         <option value="1">Band</option>
                         <option value="2">Venue</option>
                     </select>
+                </fieldset> */}
+                <fieldset className="venueProfileFieldset">
+                    <legend>What type of account do you need?</legend>
+                    <div className="form-group">
+                    <label for="band"> 
+                        <input type="radio" name="band" value="band" onChange={() => {
+                            let band = 1
+                            setUserType(1)
+                        }}/>
+                        Band 
+                    </label>
+                    <label for="venue"> 
+                        <input type="radio" name="venue" value="venue" onChange={() => {
+                            let venue = 2
+                            setUserType(2)
+                        }}/>
+                        Venue 
+                    </label>
+                    </div>
                 </fieldset>
                 <fieldset className="registerFieldset">
                     <button className="btn btn-primary registerButton" type="submit">
