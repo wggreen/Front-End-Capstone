@@ -1,0 +1,85 @@
+.bandProfileFieldset {
+    border: none
+}
+
+.bandProfileForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#bandSocialMedia{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.venueProfileForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.venueProfileFieldset {
+    border: none;
+}
+
+.allAgesDiv{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#venueSocialMedia{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#venueAddress {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#venueAddress2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#venueZipField {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#bandBlurb {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#bandBlurbInnerDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#venueSocialMediaFieldset {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#venueBlurb {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#venueBlurbDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

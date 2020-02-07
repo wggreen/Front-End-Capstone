@@ -52,7 +52,7 @@ export default (props) => {
             </>
         }
         if (profile.twitter) {
-            bandtwitter = <>
+            bandTwitter = <>
             <div className="band__twitter"> <a href="{profile.twitter}"> {profile.twitter} </a> </div>
             </>
         }

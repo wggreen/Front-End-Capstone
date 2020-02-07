@@ -23,8 +23,6 @@ const Login = props => {
 
         existingUserCheck()
             .then(exists => {
-                console.log("exists:")
-                console.log(exists)
                 if (exists && exists.password === password.current.value) {
                     localStorage.setItem("capstone_user", exists.id)
                     if (exists.userTypeId === 1) {

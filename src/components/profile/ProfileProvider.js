@@ -44,8 +44,8 @@ export const ProfileProvider = props => {
     <ProfileContext.Provider
       value={{
         profiles,
-        addprofile,
-        editprofile
+        addProfile,
+        editProfile
       }}
     >
       {props.children}
