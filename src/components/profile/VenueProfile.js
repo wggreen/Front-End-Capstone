@@ -33,21 +33,21 @@ export default (props) => {
     let venueAddress = ""
     if (profile.address && profile.addressPublic) {
         venueAddress = <>
-            <div className="venue__address"> { venue.address } </div>
+            <div className="venue__address"> { profile.address } </div>
             </>
     }
 
     let venueAddress2 = ""
     if (profile.address2 && profile.address2Public) {
         venueAddress2 = <>
-            <div className="venue__address2"> { venue.address2 } </div>
+            <div className="venue__address2"> { profile.address2 } </div>
             </>
     }
 
     let venueZip =""
     if (profile.zip && profile.zipPublic) {
         venueZip = <>
-            <div className="venue__zip"> { venue.zip } </div>
+            <div className="venue__zip"> { profile.zip } </div>
             </>
     }
 
@@ -59,36 +59,44 @@ export default (props) => {
     if (profile.webPublic) {
         if (profile.website) {
             venueWebsite = <>
-            <div className="venue__website"> <a href="{venue.websute}"> {venue.website} </a> </div>
+            <div className="venue__website"> <a href="{profile.websute}"> {profile.website} </a> </div>
             </>
         }
         if (profile.facebook) {
             venueFacebook = <>
-            <div className="venue__facebook"> <a href="{venue.facebook}"> {venue.facebook} </a> </div>
+            <div className="venue__facebook"> <a href="{profile.facebook}"> {profile.facebook} </a> </div>
             </>
         }
         if (profile.instagram) {
             venueInstagram = <>
-            <div className="venue__instagram"> <a href="{venue.instagram}"> {venue.instagram} </a> </div>
+            <div className="venue__instagram"> <a href="{profile.instagram}"> {profile.instagram} </a> </div>
             </>
         }
         if (profile.twitter) {
             venueTwitter = <>
-            <div className="venue__twitter"> <a href="{venue.twitter}"> {venue.twitter} </a> </div>
+            <div className="venue__twitter"> <a href="{profile.twitter}"> {profile.twitter} </a> </div>
             </>
         }
+    }
+
+    let venueBlurb = ""
+
+    if (profile.blurb && profile.blurbPublic) {
+        venueBlurb = <>
+        <div className="venue__blurb"> { profile.blurb } </div>
+        </>
     }
 
     return (
         <section className="venueProfile">
             <h3 className="venue__name"> { profile.name } </h3>
-            <div className="venue__capacity"> Capacity: { venue.capacity } </div>
+            <div className="venue__capacity"> Capacity: { profile.capacity } </div>
             <div className="venue__allAges"> {allAges} </div>
             <div className="venue__fullAddress">
                 {venueAddress}
                 {venueAddress2}
-                <div className="venue__city"> { venue.city } </div>
-                <div className="venue__state"> { venue.state } </div>
+                <div className="venue__city"> { profile.city } </div>
+                <div className="venue__state"> { profile.state } </div>
                 {venueZip}
             </div>
             <div className="venue_web">
@@ -97,6 +105,7 @@ export default (props) => {
                 {venueInstagram}
                 {venueTwitter}
             </div>
+            {venueBlurb}
         </section>
     )
 

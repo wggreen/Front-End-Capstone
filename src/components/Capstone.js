@@ -5,7 +5,6 @@ import ApplicationViews from "./ApplicationViews"
 
 export default () => (
     <>
-        <Route render={props => <NavBar {...props} />} />
         <Route render={props => <ApplicationViews {...props} />} />
     </>
 )

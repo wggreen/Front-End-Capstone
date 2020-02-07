@@ -8,7 +8,6 @@ const Register = props => {
     const password = useRef()
     const verifyPassword = useRef()
 
-    const userType = useRef()
     const [verifyEmailResult, setVerifyEmailResult] = useState(false)
     const [userType, setUserType] = useState()
 
@@ -91,90 +90,118 @@ const Register = props => {
 
     return (
         <main>
-            <form className="form--login registerContainer" onSubmit={handleRegister}>
-                <h1 className="h3 mb-3 font-weight-normal registerHeader">Register</h1>
-                <fieldset className="registerUserContainer registerFieldset">
-                    <label htmlFor="username">Username </label>
-                    <input ref={username} type="text"
-                        name="username"
-                        className="form-control registerUser"
-                        placeholder=""
-                        required autoFocus />
-                </fieldset>
-                <fieldset className="registerEmailContainer registerFieldset">
-                    <label htmlFor="inputEmail"> Email address </label>
-                    <input ref={email} type="email"
-                        name="inputEmail"
-                        className="form-control registerEmail"
-                        placeholder=""
-                        required />
-                </fieldset>
-                <fieldset className="registerEmailContainer registerFieldset">
-                    <label htmlFor="verifyEmail">Confirm email address </label>
-                    <input ref={verifyEmail} type="email"
-                        name="verifyEmail"
-                        className="form-control registerEmail"
-                        placeholder=""
-                        required />
-                </fieldset>
-                {verifyEmailResult ? (
-                    <>
-                    <div className="registerError">
-                        That email address is already in use
-                    </div>
-                    </>
-                ) : (
-                    ""
-                )}
-                <fieldset className="registerPassContainer registerFieldset">
-                    <label htmlFor="password"> Password </label>
-                    <input ref={password} type="password"
-                        name="password"
-                        className="form-control registerPass"
-                        placeholder=""
-                        required />
-                </fieldset>
-                <fieldset className="confirmPassContainer registerFieldset">
-                    <label htmlFor="verifyPassword"> Verify Password </label>
-                    <input ref={verifyPassword} type="password"
-                        name="verifyPassword"
-                        className="form-control confirmPass"
-                        placeholder=""
-                        required />
-                </fieldset>
-                {/* <fieldset className="selectTypeContainer registerFieldset">
-                    <label htmlFor="select">What type of account do you need? </label>
-                    <select className="dropdown" id="userDropdown" name="select"
-                        ref={userType}>
-                        <option value="0">Please select an option...</option>
-                        <option value="1">Band</option>
-                        <option value="2">Venue</option>
-                    </select>
-                </fieldset> */}
-                <fieldset className="venueProfileFieldset">
-                    <legend>What type of account do you need?</legend>
-                    <div className="form-group">
-                    <label for="band"> 
-                        <input type="radio" name="band" value="band" onChange={() => {
-                            let band = 1
-                            setUserType(1)
-                        }}/>
-                        Band 
-                    </label>
-                    <label for="venue"> 
-                        <input type="radio" name="venue" value="venue" onChange={() => {
-                            let venue = 2
-                            setUserType(2)
-                        }}/>
-                        Venue 
-                    </label>
-                    </div>
-                </fieldset>
-                <fieldset className="registerFieldset">
-                    <button className="btn btn-primary registerButton" type="submit">
-                        Register
-                    </button>
-                </fieldset>
+            <form className="form--login" id="registerContainer" onSubmit={handleRegister}>
+                <div id="registerFormContainer">
+                    <h1 className="h3 mb-3 font-weight-normal registerHeader">Register</h1>
+                    <fieldset className="registerUserContainer registerFieldset">
+                        <label htmlFor="username">Username </label>
+                        <input ref={username} type="text"
+                            name="username"
+                            className="form-control registerUser"
+                            placeholder=""
+                            required autoFocus />
+                    </fieldset>
+                    <fieldset className="registerEmailContainer registerFieldset">
+                        <label htmlFor="inputEmail"> Email address </label>
+                        <input ref={email} type="email"
+                            name="inputEmail"
+                            className="form-control registerEmail"
+                            placeholder=""
+                            required />
+                    </fieldset>
+                    <fieldset className="registerEmailContainer registerFieldset">
+                        <label htmlFor="verifyEmail">Confirm email address </label>
+                        <input ref={verifyEmail} type="email"
+                            name="verifyEmail"
+                            className="form-control registerEmail"
+                            placeholder=""
+                            required />
+                    </fieldset>
+                    {verifyEmailResult ? (
+                        <>
+                        <div className="registerError">
+                            That email address is already in use
+                        </div>
+                        </>
+                    ) : (
+                        ""
+                    )}
+                    <fieldset className="registerPassContainer registerFieldset">
+                        <div id="registerPassword">
+                            <label htmlFor="password"> Password </label>
+                            <div>
+                                Your password must have at least:
+                                <ul>
+                                    <li>
+                                        8 characters
+                                    </li>
+                                    <li>
+                                        1 upper case letter
+                                    </li>
+                                    <li>
+                                        1 lower case letter
+                                    </li>
+                                    <li>
+                                        1 number and
+                                    </li>
+                                    <li>
+                                        1 special character
+                                    </li>
+
+                                </ul>
+                            </div>
+                            <input ref={password} type="password"
+                                name="password"
+                                className="form-control registerPass"
+                                placeholder=""
+                                required />
+                        </div>
+                    </fieldset>
+                    <fieldset className="confirmPassContainer registerFieldset">
+                        <label htmlFor="verifyPassword"> Verify Password </label>
+                        <input ref={verifyPassword} type="password"
+                            name="verifyPassword"
+                            className="form-control confirmPass"
+                            placeholder=""
+                            required />
+                    </fieldset>
+                    {/* <fieldset className="selectTypeContainer registerFieldset">
+                        <label htmlFor="select">What type of account do you need? </label>
+                        <select className="dropdown" id="userDropdown" name="select"
+                            ref={userType}>
+                            <option value="0">Please select an option...</option>
+                            <option value="1">Band</option>
+                            <option value="2">Venue</option>
+                        </select>
+                    </fieldset> */}
+                    <fieldset className="venueProfileFieldset">
+                        <div id="registerAccountType">
+                            <legend>What type of account do you need?</legend>
+                            <div className="form-group">
+                            <label for="band"> 
+                                <input type="radio" name="band" value="band" onChange={() => {
+                                    let band = 1
+                                    setUserType(1)
+                                }}/>
+                                Band 
+                            </label>
+                            <label for="venue"> 
+                                <input type="radio" name="band" value="venue" onChange={() => {
+                                    let venue = 2
+                                    setUserType(2)
+                                }}/>
+                                Venue 
+                            </label>
+                            </div>
+
+                        </div>
+                    </fieldset>
+                    <fieldset className="registerFieldset">
+                        <button className="btn btn-primary registerButton" type="submit">
+                            Register
+                        </button>
+                    </fieldset>
+                </div>
             </form>
         </main>
     )
