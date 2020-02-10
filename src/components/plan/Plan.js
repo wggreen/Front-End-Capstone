@@ -1,5 +1,5 @@
-import React, { useContext } from "react"
-import { withGoogleMap, GoogleMap, Marker } from 'react-google-maps'
+import React, { useContext, useState } from "react"
+import { withGoogleMap, GoogleMap, Marker, InfoWindow } from 'react-google-maps'
 import { AddressContext } from "../addresses/AddressProvider"
 
 export default (props) => {
@@ -8,7 +8,7 @@ export default (props) => {
 
   const PlanMap = withGoogleMap(props => (
     <GoogleMap google={window.google} defaultCenter = { { lat: 39.5, lng:  -98.35 } }
-    defaultZoom = { 3.5 }>
+    defaultZoom = { 4 }>
           {
             addresses.map(address => 
               <>
@@ -23,7 +23,12 @@ export default (props) => {
                   fontFamily: "Arial",
                   fontSize: "14px",
                 }}
-              />
+              >
+                <InfoWindow
+                  key={address.id}>
+                  <span>{address.name}</span>
+                </InfoWindow>
+              </Marker>
               </>
             )
           }

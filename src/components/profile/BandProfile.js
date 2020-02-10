@@ -23,37 +23,37 @@ export default (props) => {
     if (profile.webPublic) {
         if (profile.website) {
             bandWebsite = <>
-            <div className="band__website"> <a href="{profile.website}"> {profile.website} </a> </div>
+            <div className="band__website"> <a href={profile.website}> {profile.website} </a> </div>
             </>
         }
         if (profile.spotify) {
             bandSpotify = <>
-            <div className="band__spotify"> <a href="{profile.spotify}"> {profile.spotify} </a> </div>
+            <div className="band__spotify"> <a href={profile.spotify}> {profile.spotify} </a> </div>
             </>
         }
         if (profile.bandcamp) {
             bandBandcamp = <>
-            <div className="band__bandcamp"> <a href="{profile.bandcamp}"> {profile.bandcamp} </a> </div>
+            <div className="band__bandcamp"> <a href={profile.bandcamp}> {profile.bandcamp} </a> </div>
             </>
         }
         if (profile.bandcamp) {
             bandYoutube = <>
-            <div className="band__youtube"> <a href="{profile.youtube}"> {profile.youtube} </a> </div>
+            <div className="band__youtube"> <a href={profile.youtube}> {profile.youtube} </a> </div>
             </>
         }
         if (profile.facebook) {
             bandFacebook = <>
-            <div className="band__facebook"> <a href="{profile.facebook}"> {profile.facebook} </a> </div>
+            <div className="band__facebook"> <a href={profile.facebook}> {profile.facebook} </a> </div>
             </>
         }
         if (profile.instagram) {
             bandInstagram = <>
-            <div className="band__instagram"> <a href="{profile.instagram}"> {profile.instagram} </a> </div>
+            <div className="band__instagram"> <a href={profile.instagram}> {profile.instagram} </a> </div>
             </>
         }
         if (profile.twitter) {
             bandTwitter = <>
-            <div className="band__twitter"> <a href="{profile.twitter}"> {profile.twitter} </a> </div>
+            <div className="band__twitter"> <a href={profile.twitter}> {profile.twitter} </a> </div>
             </>
         }
     }
