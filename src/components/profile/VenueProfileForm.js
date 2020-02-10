@@ -1,9 +1,11 @@
 import React, { useContext, useState, useEffect, useRef } from "react"
 import { ProfileContext } from "./ProfileProvider"
+import { AddressContext } from "../addresses/AddressProvider"
 import "./Profile.css"
 
 export default props => {
-    const { addProfile, profiles, editProfile } = useContext(ProfileContext)
+    const { addProfile, profiles, getProfiles, editProfile } = useContext(ProfileContext)
+    const { addAddress } = useContext(AddressContext)
     const venueName = useRef()
     const venueCapacity = useRef()
     const venueAddress = useRef()
@@ -50,8 +52,7 @@ export default props => {
 
     const constructNewProfile = () => {
             if (editMode) {
-                editProfile({
-                    id: profile.id,
+                let profile = {
                     userId: parseInt(localStorage.getItem("capstone_user"), 10),
                     name: venueName.current.value,
                     capacity: venueCapacity.current.value,
@@ -71,11 +72,42 @@ export default props => {
                     ... venueTwitter.current.value && { twitter: venueTwitter.current.value},
                     ... venueBlurb.current.value && { blurb: venueBlurb.current.value},
                     blurbPublic: blurbPublic
+                }
+                editProfile(profile)
+                .then(() => {
+                    getProfiles()
+                    .then(() => {
+                        let foundProfile = profiles.find(profile => profile.userId === parseInt(localStorage.getItem("capstone_user"), 10)) ||{}
+                        let address = {
+                            userId: foundProfile.userId,
+                            ... venueAddress.current.value && { address: venueAddress.current.value },
+                            ... venueAddress.current.value && { addressPublic: addressPublic },
+                            city: venueCity.current.value,
+                            state: venueState.current.value,
+                            ... venueAddressLine2.current.value && { address2: venueAddressLine2.current.value },
+                            ... venueAddressLine2.current.value && { address2Public: addressPublic2 },
+                            ... venueZip.current.value && { zip: venueZip.current.value },
+                            ... venueZip.current.value && { zipPublic: zipPublic }
+                        }
+                        let addressString = ""
+
+                        Object.keys(address).map(property => {
+                            addressString = addressString + " " + property + " "
+                        })
+
+                        let geocoder = new window.google.maps.Geocoder();
+                        geocoder.geocode( { 'address': addressString}, function(results, status) {
+                                    if (status == 'OK') {
+                                        addAddress(results)
+                                        .then(() => {
+                                            props.history.push(`/venueProfiles/${foundProfile.id}`)
+                                        })
+                                    } 
+                        });
+                    })
                 })
-                    .then(() => props.history.push(`/venueProfiles/${profile.id}`))
             } else {
-                addProfile({
-                    id: profile.id,
+                let profile = {
                     userId: parseInt(localStorage.getItem("capstone_user"), 10),
                     name: venueName.current.value,
                     capacity: venueCapacity.current.value,
@@ -95,8 +127,47 @@ export default props => {
                     ... venueTwitter.current.value && { twitter: venueTwitter.current.value},
                     ... venueBlurb.current.value && { blurb: venueBlurb.current.value},
                     blurbPublic: blurbPublic
+                }
+                addProfile(profile)
+                .then(() => {
+                    let foundProfile = profiles.find(profile => profile.userId === parseInt(localStorage.getItem("capstone_user"), 10)) || {}
+                    let userId = foundProfile.userId
+                    let address = {
+                        ... venueAddress.current.value && { address: venueAddress.current.value },
+                        ... venueAddress.current.value && { addressPublic: addressPublic },
+                        city: venueCity.current.value,
+                        state: venueState.current.value,
+                        ... venueAddressLine2.current.value && { address2: venueAddressLine2.current.value },
+                        ... venueAddressLine2.current.value && { address2Public: addressPublic2 },
+                        ... venueZip.current.value && { zip: venueZip.current.value },
+                        ... venueZip.current.value && { zipPublic: zipPublic },
+                        userId: userId
+                    }
+                    let addressString = ""
+
+                    for (const property in address) {
+                        if (property != "userId") {
+                            addressString = addressString + " " + address[property] + " "
+                        }
+                    }
+                    let geocoder = new window.google.maps.Geocoder();
+                    geocoder.geocode( {address: addressString}, function(results, status) {
+                                if (status == 'OK') {
+                                    let addressObject = {
+                                        userId: foundProfile.userId,
+                                        name: foundProfile.name,
+                                        address: results[0].geometry.location
+                                    }
+                                    console.log(addressObject)
+                                    debugger
+                                    addAddress(addressObject)
+                                    .then(() => {
+                                        props.history.push(`/venueProfiles/${foundProfile.id}`)
+                                    })
+                                } 
+                    });
                 })
-                    .then(() => props.history.push(`/venueProfiles/${profile.id}`))
+                
             }
     }
 
@@ -153,7 +224,6 @@ export default props => {
                     </div>
                 </div>
             </fieldset>
-
             <fieldset className="venueProfileFieldset">
                 <div className="form-group" id="venueAddress">
                     <div className="venueAddressDiv">

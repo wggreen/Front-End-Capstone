@@ -18,7 +18,6 @@ export const UserProvider = props => {
       .then(getUsers)
   }
 
-
   useEffect(() => {
     getUsers();
   }, []);
