@@ -1,11 +1,11 @@
 import React, { useContext, useState, useEffect, useRef } from "react"
-import { ProfileContext } from "./ProfileProvider"
 import { AddressContext } from "../addresses/AddressProvider"
+import { UserContext } from "../user/UserProvider"
 import "./Profile.css"
 
 export default props => {
-    const { addProfile, profiles, getProfiles, editProfile } = useContext(ProfileContext)
-    const { addAddress } = useContext(AddressContext)
+    const { editUser } = useContext(UserContext)
+    const { addAddress, editAddress } = useContext(AddressContext)
     const venueName = useRef()
     const venueCapacity = useRef()
     const venueAddress = useRef()
@@ -52,8 +52,12 @@ export default props => {
 
     const constructNewProfile = () => {
             if (editMode) {
-                let profile = {
-                    userId: parseInt(localStorage.getItem("capstone_user"), 10),
+                let newUser = {
+                    email: user.email,
+                    password: user.password,
+                    username: user.username,
+                    userTypeId: user.userTypeId,
+                    id: user.id,
                     name: venueName.current.value,
                     capacity: venueCapacity.current.value,
                     allAges: allAges,
@@ -73,13 +77,9 @@ export default props => {
                     ... venueBlurb.current.value && { blurb: venueBlurb.current.value},
                     blurbPublic: blurbPublic
                 }
-                editProfile(profile)
-                .then(() => {
-                    getProfiles()
+                editUser(newUser)
                     .then(() => {
-                        let foundProfile = profiles.find(profile => profile.userId === parseInt(localStorage.getItem("capstone_user"), 10)) ||{}
                         let address = {
-                            userId: foundProfile.userId,
                             ... venueAddress.current.value && { address: venueAddress.current.value },
                             ... venueAddress.current.value && { addressPublic: addressPublic },
                             city: venueCity.current.value,
@@ -87,7 +87,8 @@ export default props => {
                             ... venueAddressLine2.current.value && { address2: venueAddressLine2.current.value },
                             ... venueAddressLine2.current.value && { address2Public: addressPublic2 },
                             ... venueZip.current.value && { zip: venueZip.current.value },
-                            ... venueZip.current.value && { zipPublic: zipPublic }
+                            ... venueZip.current.value && { zipPublic: zipPublic },
+                            id: newUser.id
                         }
                         let addressString = ""
 
@@ -98,17 +99,26 @@ export default props => {
                         let geocoder = new window.google.maps.Geocoder();
                         geocoder.geocode( { 'address': addressString}, function(results, status) {
                                     if (status == 'OK') {
-                                        addAddress(results)
+                                        let addressObject = {
+                                            userId: newUser.id,
+                                            name: newUser.name,
+                                            address: results[0].geometry.location,
+                                            id: newUser.id
+                                        }
+                                        editAddress(addressObject)
                                         .then(() => {
                                             props.history.push(`/venueProfiles/${foundProfile.id}`)
                                         })
                                     } 
                         });
                     })
-                })
-            } else {
-                let profile = {
-                    userId: parseInt(localStorage.getItem("capstone_user"), 10),
+                }
+             else {
+                let newUser = {
+                    email: user.email,
+                    password: user.password,
+                    username: user.username,
+                    userTypeId: user.userTypeId,
                     name: venueName.current.value,
                     capacity: venueCapacity.current.value,
                     allAges: allAges,
@@ -128,10 +138,9 @@ export default props => {
                     ... venueBlurb.current.value && { blurb: venueBlurb.current.value},
                     blurbPublic: blurbPublic
                 }
-                addProfile(profile)
+                debugger
+                editUser(newUser)
                 .then(() => {
-                    let foundProfile = profiles.find(profile => profile.userId === parseInt(localStorage.getItem("capstone_user"), 10)) || {}
-                    let userId = foundProfile.userId
                     let address = {
                         ... venueAddress.current.value && { address: venueAddress.current.value },
                         ... venueAddress.current.value && { addressPublic: addressPublic },
@@ -141,7 +150,6 @@ export default props => {
                         ... venueAddressLine2.current.value && { address2Public: addressPublic2 },
                         ... venueZip.current.value && { zip: venueZip.current.value },
                         ... venueZip.current.value && { zipPublic: zipPublic },
-                        userId: userId
                     }
                     let addressString = ""
 
@@ -153,13 +161,12 @@ export default props => {
                     let geocoder = new window.google.maps.Geocoder();
                     geocoder.geocode( {address: addressString}, function(results, status) {
                                 if (status == 'OK') {
+                                    debugger
                                     let addressObject = {
-                                        userId: foundProfile.userId,
-                                        name: foundProfile.name,
+                                        userId: newUser.id,
+                                        name: newUser.name,
                                         address: results[0].geometry.location
                                     }
-                                    console.log(addressObject)
-                                    debugger
                                     addAddress(addressObject)
                                     .then(() => {
                                         props.history.push(`/venueProfiles/${foundProfile.id}`)
@@ -201,21 +208,21 @@ export default props => {
                     <legend>All Ages?</legend>
                     <div className="form-group">
                     <label for="yes"> 
-                        <input type="radio" name="yes" value="true" checked="checked" onChange={() => {
+                        <input type="radio" name="allAges" value="true" checked="checked" onChange={() => {
                             let yes = "yes"
                             setAllAges(yes)
                         }}/>
                         Yes 
                     </label>
                     <label for="eighteen"> 
-                        <input type="radio" name="eighteen" value="18+" onChange={() => {
+                        <input type="radio" name="allAges" value="18+" onChange={() => {
                             let eighteenPlus = "18+"
                             setAllAges(eighteenPlus)
                         }}/>
                         18+
                     </label>
                     <label for="twentyOne"> 
-                        <input type="radio" name="twentyOne" value="18+" onChange={() => {
+                        <input type="radio" name="allAges" value="18+" onChange={() => {
                             let twentyOnePlus = "21+"
                             setAllAges(twentyOnePlus)
                         }}/>
@@ -335,14 +342,14 @@ export default props => {
                         <div className="form-group">
                         <legend>Make it public?</legend>
                         <label for="yes"> 
-                            <input type="radio" name="yes" value="true" onChange={() => {
+                            <input type="radio" name="zip" value="true" onChange={() => {
                                 let truth = true
                                 setZipPublic(truth)
                             }}/>
                             Yes 
                         </label>
                         <label for="no"> 
-                            <input type="radio" name="no" value="false" checked="checked" onChange={() => {
+                            <input type="radio" name="zip" value="false" checked="checked" onChange={() => {
                                 let falseness = false
                                 setZipPublic(falseness)
                             }}/>

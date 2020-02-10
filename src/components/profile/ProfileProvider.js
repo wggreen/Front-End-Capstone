@@ -18,8 +18,9 @@ export const ProfileProvider = props => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(profile)
-    }).then(getProfiles);
-  };
+    })
+    .then(getProfiles)
+  }
 
   const editProfile = profile => {
     return fetch(`http://localhost:8088/profiles/${profile.id}`, {
@@ -37,7 +38,7 @@ export const ProfileProvider = props => {
   }, []);
 
   useEffect(() => {
-    console.log("***PROFILES APP STATE CHANGED");
+    console.log("***PROFILES APP STATE CHANGED", profiles);
   }, [profiles]);
 
   return (

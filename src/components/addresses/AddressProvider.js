@@ -25,8 +25,20 @@ export const AddressProvider = props => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(address)
-    }).then(getAddresses);
-  };
+    })
+    .then(getAddresses)
+  }
+
+  const editAddress = address => {
+    return fetch(`http://localhost:8088/addresses/${address.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(user)
+    })
+    .then(getAddresses)
+  }
 
 
   useEffect(() => {
@@ -41,7 +53,8 @@ export const AddressProvider = props => {
     <AddressContext.Provider
       value={{
         addresses,
-        addAddress
+        addAddress,
+        editAddress
       }}
     >
       {props.children}

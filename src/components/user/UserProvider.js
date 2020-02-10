@@ -18,6 +18,17 @@ export const UserProvider = props => {
       .then(getUsers)
   }
 
+  const editUser = user => {
+    return fetch(`http://localhost:8088/users/${user.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(user)
+    })
+    .then(getUsers)
+  }
+
   useEffect(() => {
     getUsers();
   }, []);
@@ -30,7 +41,8 @@ export const UserProvider = props => {
     <UserContext.Provider
       value={{
         users,
-        deleteUser
+        deleteUser,
+        editUser
       }}
     >
       {props.children}

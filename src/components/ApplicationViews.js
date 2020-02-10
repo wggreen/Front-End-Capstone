@@ -33,23 +33,23 @@ export default props => {
             }}
           />
           <ProfileProvider>
-            <UserProvider>
+            <AddressProvider>
+              <UserProvider>
                 <Route render={props => <NavBar {...props} />} />
-              </UserProvider>
-              <Route path="/bandProfiles/:profileId(\d+)" render={
-                props => <BandProfile {...props} />
-              } />
-              <Route path="/venueProfiles/:profileId(\d+)" render={
-                props => <VenueProfile {...props} />
-              } />
-              <Route path="/createBandProfile" render={
-                props => <BandProfileForm {...props} />
-              } />
-              <AddressProvider>
+                <Route path="/bandProfiles/:profileId(\d+)" render={
+                  props => <BandProfile {...props} />
+                } />
+                <Route path="/venueProfiles/:profileId(\d+)" render={
+                  props => <VenueProfile {...props} />
+                } />
+                <Route path="/createBandProfile" render={
+                  props => <BandProfileForm {...props} />
+                } />
                 <Route exact path="/plan" render={props => <Plan {...props} />} />
                 <Route path="/createVenueProfile" render={
                   props => <VenueProfileForm {...props} />
                 } />
+                </UserProvider>
               </AddressProvider>
             </ProfileProvider>
             <Route exact path="/login" render={props => <Login {...props} />} />
