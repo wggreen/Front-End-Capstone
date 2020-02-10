@@ -45,7 +45,8 @@ export const ProfileProvider = props => {
       value={{
         profiles,
         addProfile,
-        editProfile
+        editProfile,
+        getProfiles
       }}
     >
       {props.children}

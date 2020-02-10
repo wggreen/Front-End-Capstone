@@ -59,22 +59,22 @@ export default (props) => {
     if (profile.webPublic) {
         if (profile.website) {
             venueWebsite = <>
-            <div className="venue__website"> <a href="{profile.websute}"> {profile.website} </a> </div>
+            <div className="venue__website"> <a href={profile.website}> {profile.website} </a> </div>
             </>
         }
         if (profile.facebook) {
             venueFacebook = <>
-            <div className="venue__facebook"> <a href="{profile.facebook}"> {profile.facebook} </a> </div>
+            <div className="venue__facebook"> <a href={profile.facebook}> {profile.facebook} </a> </div>
             </>
         }
         if (profile.instagram) {
             venueInstagram = <>
-            <div className="venue__instagram"> <a href="{profile.instagram}"> {profile.instagram} </a> </div>
+            <div className="venue__instagram"> <a href={profile.instagram}> {profile.instagram} </a> </div>
             </>
         }
         if (profile.twitter) {
             venueTwitter = <>
-            <div className="venue__twitter"> <a href="{profile.twitter}"> {profile.twitter} </a> </div>
+            <div className="venue__twitter"> <a href={profile.twitter}> {profile.twitter} </a> </div>
             </>
         }
     }

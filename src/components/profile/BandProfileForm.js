@@ -3,7 +3,7 @@ import { ProfileContext } from "./ProfileProvider"
 import "./Profile.css"
 
 export default props => {
-    const { addProfile, profiles, editProfile } = useContext(ProfileContext)
+    const { addProfile, profiles, getProfiles, editProfile } = useContext(ProfileContext)
     const bandName = useRef()
     const bandSize = useRef()
     const bandCity = useRef()
@@ -46,8 +46,7 @@ export default props => {
 
     const constructNewProfile = () => {
             if (editMode) {
-                editProfile({
-                    id: profile.id,
+                let profile = {
                     userId: parseInt(localStorage.getItem("capstone_user"), 10),
                     name: bandName.current.value,
                     size: bandSize.current.value,
@@ -63,11 +62,17 @@ export default props => {
                     webPublic: webPublic,
                     ... bandBlurb.current.value && { blurb: bandBlurb.current.value },
                     blurbPublic: blurbPublic
-                })
-                    .then(() => props.history.push(`/bandProfiles/${profile.id}`))
+                }
+                editProfile(profile)
+                    .then(() => {
+                        getProfiles()
+                        .then(() => {
+                            let foundProfile = profiles.find(profile => profile.userId === parseInt(localStorage.getItem("capstone_user"), 10)) ||{}
+                            props.history.push(`/bandProfiles/${foundProfile.id}`)
+                        })
+                    })
             } else {
-                addProfile({
-                    id: profile.id,
+                let profile = {
                     userId: parseInt(localStorage.getItem("capstone_user"), 10),
                     name: bandName.current.value,
                     size: bandSize.current.value,
@@ -83,10 +88,19 @@ export default props => {
                     webPublic: webPublic,
                     ... bandBlurb.current.value && { blurb: bandBlurb.current.value },
                     blurbPublic: blurbPublic
-                })
-                    .then(() => props.history.push(`/bandProfiles/${profile.id}`))
+                }
+                addProfile(profile)
+                    .then(() => {
+                        getProfiles()
+                        .then(() => {
+                            let foundProfile = profiles.find(profile => profile.userId === parseInt(localStorage.getItem("capstone_user"), 10)) ||{}
+                            props.history.push(`/bandProfiles/${foundProfile.id}`)
+                        })
+                    })
             }
     }
+
+    
 
     return (
         <form className="bandProfileForm">
