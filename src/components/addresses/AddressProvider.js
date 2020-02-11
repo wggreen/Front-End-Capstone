@@ -35,7 +35,7 @@ export const AddressProvider = props => {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(user)
+      body: JSON.stringify(address)
     })
     .then(getAddresses)
   }
@@ -54,7 +54,8 @@ export const AddressProvider = props => {
       value={{
         addresses,
         addAddress,
-        editAddress
+        editAddress,
+        deleteAddress
       }}
     >
       {props.children}

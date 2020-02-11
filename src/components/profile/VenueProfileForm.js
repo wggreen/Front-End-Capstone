@@ -4,7 +4,7 @@ import { UserContext } from "../user/UserProvider"
 import "./Profile.css"
 
 export default props => {
-    const { editUser } = useContext(UserContext)
+    const { editUser, users, addUser } = useContext(UserContext)
     const { addAddress, editAddress } = useContext(AddressContext)
     const venueName = useRef()
     const venueCapacity = useRef()
@@ -18,7 +18,7 @@ export default props => {
     const venueInstagram = useRef()
     const venueTwitter = useRef()
     const venueBlurb = useRef()
-    const [profile, setProfile] = useState({})
+    const [user, setUser] = useState({})
     const [allAges, setAllAges] = useState()
     const [addressPublic, setAddressPublic] = useState()
     const [addressPublic2, setAddressPublic2] = useState()
@@ -26,7 +26,7 @@ export default props => {
     const [webPublic, setWebPublic] = useState()
     const [blurbPublic, setBlurbPublic] = useState()
 
-    const editMode = props.match.params.hasOwnProperty("profileId")
+    const editMode = props.match.params.hasOwnProperty("userId")
 
     // const handleControlledInputChange = (event) => {
     //     /*
@@ -40,136 +40,145 @@ export default props => {
 
     const setDefaults = () => {
         if (editMode) {
-            const profileId = parseInt(props.match.params.profileId)
-            const selectedProfile = profiles.find(p => p.id === profileId) ||{}
-            setProfile(selectedProfile)
+            const userId = parseInt(props.match.params.userId)
+            const seletedUser = users.find(user => user.id === userId) ||{}
+            setUser(seletedUser)
         }
     }
 
     useEffect(() => {
         setDefaults()
-    }, [profiles])
+    }, [users])
 
     const constructNewProfile = () => {
             if (editMode) {
-                let newUser = {
+                editUser({
                     email: user.email,
                     password: user.password,
                     username: user.username,
-                    userTypeId: user.userTypeId,
+                    userType: user.userType,
                     id: user.id,
                     name: venueName.current.value,
                     capacity: venueCapacity.current.value,
                     allAges: allAges,
-                    ... venueAddress.current.value && { address: venueAddress.current.value },
-                    ... venueAddress.current.value && { addressPublic: addressPublic },
+                    address: venueAddress.current.value,
+                    addressPublic: addressPublic,
                     city: venueCity.current.value,
                     state: venueState.current.value,
-                    ... venueAddressLine2.current.value && { address2: venueAddressLine2.current.value },
-                    ... venueAddressLine2.current.value && { address2Public: addressPublic2 },
-                    ... venueZip.current.value && { zip: venueZip.current.value },
-                    ... venueZip.current.value && { zipPublic: zipPublic },
+                    address2: venueAddressLine2.current.value,
+                    address2Public: addressPublic2,
+                    zip: venueZip.current.value,
+                    zipPublic: zipPublic,
                     webPublic: webPublic,
-                    ... venueWebsite.current.value && { website: venueWebsite.current.value},
-                    ... venueFacebook.current.value && { facebook: venueFacebook.current.value},
-                    ... venueInstagram.current.value && { instagram: venueInstagram.current.value},
-                    ... venueTwitter.current.value && { twitter: venueTwitter.current.value},
-                    ... venueBlurb.current.value && { blurb: venueBlurb.current.value},
-                    blurbPublic: blurbPublic
-                }
-                editUser(newUser)
+                    website: venueWebsite.current.value,
+                    facebook: venueFacebook.current.value,
+                    instagram: venueInstagram.current.value,
+                    twitter: venueTwitter.current.value,
+                    blurb: venueBlurb.current.value,
+                    blurbPublic: blurbPublic,
+                    size: "",
+                    bandcamp: "",
+                    youtube: "",
+                    spotify: ""
+                })
                     .then(() => {
                         let address = {
-                            ... venueAddress.current.value && { address: venueAddress.current.value },
-                            ... venueAddress.current.value && { addressPublic: addressPublic },
+                            address: venueAddress.current.value,
+                            addressPublic: addressPublic,
                             city: venueCity.current.value,
                             state: venueState.current.value,
-                            ... venueAddressLine2.current.value && { address2: venueAddressLine2.current.value },
-                            ... venueAddressLine2.current.value && { address2Public: addressPublic2 },
-                            ... venueZip.current.value && { zip: venueZip.current.value },
-                            ... venueZip.current.value && { zipPublic: zipPublic },
-                            id: newUser.id
+                            address2: venueAddressLine2.current.value,
+                            address2Public: addressPublic2,
+                            zip: venueZip.current.value,
+                            zipPublic: zipPublic,
+                            userId: parseInt(localStorage.getItem("capstone_user"), 10)
                         }
                         let addressString = ""
 
-                        Object.keys(address).map(property => {
-                            addressString = addressString + " " + property + " "
-                        })
+                        for (const property in address) {
+                            if (property != "userId") {
+                                addressString = addressString + " " + address[property] + " "
+                            }
+                        }
 
                         let geocoder = new window.google.maps.Geocoder();
                         geocoder.geocode( { 'address': addressString}, function(results, status) {
                                     if (status == 'OK') {
                                         let addressObject = {
-                                            userId: newUser.id,
-                                            name: newUser.name,
+                                            userId: parseInt(localStorage.getItem("capstone_user"), 10),
+                                            name: venueName.current.value,
                                             address: results[0].geometry.location,
-                                            id: newUser.id
+                                            id: parseInt(localStorage.getItem("capstone_user"), 10)
                                         }
-                                        editAddress(addressObject)
+                                        let userId = parseInt(localStorage.getItem("capstone_user"), 10)
+                                        addAddress(addressObject)
                                         .then(() => {
-                                            props.history.push(`/venueProfiles/${foundProfile.id}`)
+                                            props.history.push(`/venueProfiles/${userId}`)
                                         })
                                     } 
                         });
                     })
                 }
              else {
-                let newUser = {
+                editUser({
                     email: user.email,
                     password: user.password,
                     username: user.username,
-                    userTypeId: user.userTypeId,
+                    userType: user.userType,
+                    id: user.id,
                     name: venueName.current.value,
                     capacity: venueCapacity.current.value,
                     allAges: allAges,
-                    ... venueAddress.current.value && { address: venueAddress.current.value },
-                    ... venueAddress.current.value && { addressPublic: addressPublic },
+                    address: venueAddress.current.value,
+                    addressPublic: addressPublic,
                     city: venueCity.current.value,
                     state: venueState.current.value,
-                    ... venueAddressLine2.current.value && { address2: venueAddressLine2.current.value },
-                    ... venueAddressLine2.current.value && { address2Public: addressPublic2 },
-                    ... venueZip.current.value && { zip: venueZip.current.value },
-                    ... venueZip.current.value && { zipPublic: zipPublic },
+                    address2: venueAddressLine2.current.value,
+                    address2Public: addressPublic2,
+                    zip: venueZip.current.value,
+                    zipPublic: zipPublic,
                     webPublic: webPublic,
-                    ... venueWebsite.current.value && { website: venueWebsite.current.value},
-                    ... venueFacebook.current.value && { facebook: venueFacebook.current.value},
-                    ... venueInstagram.current.value && { instagram: venueInstagram.current.value},
-                    ... venueTwitter.current.value && { twitter: venueTwitter.current.value},
-                    ... venueBlurb.current.value && { blurb: venueBlurb.current.value},
-                    blurbPublic: blurbPublic
-                }
-                debugger
-                editUser(newUser)
+                    website: venueWebsite.current.value,
+                    facebook: venueFacebook.current.value,
+                    instagram: venueInstagram.current.value,
+                    twitter: venueTwitter.current.value,
+                    blurb: venueBlurb.current.value,
+                    blurbPublic: blurbPublic,
+                    size: "",
+                    bandcamp: "",
+                    youtube: "",
+                    spotify: ""
+                })
                 .then(() => {
                     let address = {
-                        ... venueAddress.current.value && { address: venueAddress.current.value },
-                        ... venueAddress.current.value && { addressPublic: addressPublic },
+                        address: venueAddress.current.value,
+                        addressPublic: addressPublic,
                         city: venueCity.current.value,
                         state: venueState.current.value,
-                        ... venueAddressLine2.current.value && { address2: venueAddressLine2.current.value },
-                        ... venueAddressLine2.current.value && { address2Public: addressPublic2 },
-                        ... venueZip.current.value && { zip: venueZip.current.value },
-                        ... venueZip.current.value && { zipPublic: zipPublic },
+                        address2: venueAddressLine2.current.value,
+                        address2Public: addressPublic2,
+                        zip: venueZip.current.value,
+                        zipPublic: zipPublic
                     }
                     let addressString = ""
 
                     for (const property in address) {
-                        if (property != "userId") {
-                            addressString = addressString + " " + address[property] + " "
-                        }
+                        addressString = addressString + " " + address[property] + " "
                     }
                     let geocoder = new window.google.maps.Geocoder();
                     geocoder.geocode( {address: addressString}, function(results, status) {
                                 if (status == 'OK') {
-                                    debugger
                                     let addressObject = {
-                                        userId: newUser.id,
-                                        name: newUser.name,
-                                        address: results[0].geometry.location
+                                        userId: parseInt(localStorage.getItem("capstone_user"), 10),
+                                        name: venueName.current.value,
+                                        address: results[0].geometry.location,
+                                        id: parseInt(localStorage.getItem("capstone_user"), 10)
                                     }
+                                    let userId = parseInt(localStorage.getItem("capstone_user"), 10)
                                     addAddress(addressObject)
                                     .then(() => {
-                                        props.history.push(`/venueProfiles/${foundProfile.id}`)
+                                        localStorage.setItem("profile", "set")
+                                        props.history.push(`/venueProfiles/${userId}`)
                                     })
                                 } 
                     });
@@ -188,7 +197,7 @@ export default props => {
                         placeholder=""
                         // onChange={handleControlledInputChange}
                         ref={venueName}
-                        defaultValue={profile.name}
+                        defaultValue={user.name}
                     />
                 </div>
             </fieldset>
@@ -199,7 +208,7 @@ export default props => {
                         placeholder=""
                         // onChange={handleControlledInputChange}
                         ref={venueCapacity}
-                        defaultValue={profile.capacity}
+                        defaultValue={user.capacity}
                     />
                 </div>
             </fieldset>
@@ -239,7 +248,7 @@ export default props => {
                             placeholder=""
                             // onChange={handleControlledInputChange}
                             ref={venueAddress}
-                            defaultValue={profile.address}
+                            defaultValue={user.address}
                         />
                     </div>
                     <fieldset className="venueProfileFieldset">
@@ -271,7 +280,7 @@ export default props => {
                             placeholder=""
                             // onChange={handleControlledInputChange}
                             ref={venueAddressLine2}
-                            defaultValue={profile.address2}
+                            defaultValue={user.address2}
                         />
                     </div>
                     <fieldset className="venueProfileFieldset">
@@ -302,13 +311,13 @@ export default props => {
                         placeholder=""
                         // onChange={handleControlledInputChange}
                         ref={venueCity}
-                        defaultValue={profile.city}
+                        defaultValue={user.city}
                     />
                 </div>
             </fieldset>
             <fieldset className="venueProfileFieldset">
                 <label for="state">State</label>
-                <select id="state" name="state" ref={venueState} required autoFocus>
+                <select id="state" name="state" ref={venueState} required autoFocus value={user.state}>
                     <option value="0">Please select a state...</option>
                     <option value="Alabama">Alabama</option>
                     <option value="Alaska">Alaska</option>
@@ -336,6 +345,7 @@ export default props => {
                             placeholder=""
                             // onChange={handleControlledInputChange}
                             ref={venueZip}
+                            defaultValue={user.zip}
                         />
                     </div>
                     <fieldset className="venueProfileFieldset">
@@ -366,28 +376,28 @@ export default props => {
                         <label htmlFor="website">Website: </label>
                         <input type="text" name="website" autoFocus className="form-control"
                             placeholder=""
-                            defaultValue={profile.website}
+                            defaultValue={user.website}
                             // onChange={handleControlledInputChange}
                             ref={venueWebsite}
                         />
                         <label htmlFor="facebook">Facebook: </label>
                         <input type="text" name="facebook" autoFocus className="form-control"
                             placeholder=""
-                            defaultValue={profile.facebook}
+                            defaultValue={user.facebook}
                             // onChange={handleControlledInputChange}
                             ref={venueFacebook}
                         />
                         <label htmlFor="instagram">Instagram: </label>
                         <input type="text" name="instagram" autoFocus className="form-control"
                             placeholder=""
-                            defaultValue={profile.instagram}
+                            defaultValue={user.instagram}
                             // onChange={handleControlledInputChange}
                             ref={venueInstagram}
                         />
                         <label htmlFor="twitter">Twitter: </label>
                         <input type="text" name="twitter" autoFocus className="form-control"
                             placeholder=""
-                            defaultValue={profile.twitter}
+                            defaultValue={user.twitter}
                             // onChange={handleControlledInputChange}
                             ref={venueTwitter}
                         />

@@ -1,9 +1,9 @@
 import React, { useContext, useState, useEffect, useRef } from "react"
-import { ProfileContext } from "./ProfileProvider"
+import { UserContext } from "../user/UserProvider"
 import "./Profile.css"
 
 export default props => {
-    const { addProfile, profiles, getProfiles, editProfile } = useContext(ProfileContext)
+    const { users, addUser, editUser } = useContext(UserContext)
     const bandName = useRef()
     const bandSize = useRef()
     const bandCity = useRef()
@@ -16,11 +16,11 @@ export default props => {
     const bandTwitter = useRef()
     const bandSpotify = useRef()
     const bandBlurb = useRef()
-    const [profile, setProfile] = useState({})
+    const [user, setUser] = useState({})
     const [webPublic, setWebPublic] = useState()
     const [blurbPublic, setBlurbPublic] = useState()
 
-    const editMode = props.match.params.hasOwnProperty("profileId")
+    const editMode = props.match.params.hasOwnProperty("userId")
 
     // const handleControlledInputChange = (event) => {
     //     /*
@@ -34,70 +34,91 @@ export default props => {
 
     const setDefaults = () => {
         if (editMode) {
-            const profileId = parseInt(props.match.params.profileId)
-            const selectedProfile = profiles.find(p => p.id === profileId) ||{}
-            setProfile(selectedProfile)
+            const userId = parseInt(props.match.params.userId)
+            const seletedUser = users.find(user => user.id === userId) ||{}
+            setUser(seletedUser)
         }
     }
 
     useEffect(() => {
         setDefaults()
-    }, [profiles])
+    }, [users])
 
     const constructNewProfile = () => {
             if (editMode) {
-                let profile = {
-                    userId: parseInt(localStorage.getItem("capstone_user"), 10),
+                editUser({
+                    email: user.email,
+                    password: user.password,
+                    username: user.username,
+                    userType: user.userType,
+                    id: user.id,
                     name: bandName.current.value,
                     size: bandSize.current.value,
                     city: bandCity.current.value,
                     state: bandState.current.value,
-                    ... bandWebsite.current.value && { website: bandWebsite.current.value },
-                    ... bandBandcamp.current.value && { bandcamp: bandBandcamp.current.value },
-                    ... bandYoutube.current.value && { youtube: bandYoutube.current.value },
-                    ... bandFacebook.current.value && { facebook: bandFacebook.current.value },
-                    ... bandInstagram.current.value && { instagram: bandInstagram.current.value },
-                    ... bandTwitter.current.value && { twitter: bandTwitter.current.value },
-                    ... bandSpotify.current.value && { spotify: bandSpotify.current.value },
+                    website: bandWebsite.current.value,
+                    bandcamp: bandBandcamp.current.value,
+                    youtube: bandYoutube.current.value,
+                    facebook: bandFacebook.current.value,
+                    instagram: bandInstagram.current.value,
+                    twitter: bandTwitter.current.value,
+                    spotify: bandSpotify.current.value,
                     webPublic: webPublic,
-                    ... bandBlurb.current.value && { blurb: bandBlurb.current.value },
-                    blurbPublic: blurbPublic
-                }
-                editProfile(profile)
+                    blurb: bandBlurb.current.value,
+                    blurbPublic: blurbPublic,
+                    address2: "",
+                    address2Public: "",
+                    zip: "",
+                    zipPublic: "",
+                    facebook: "",
+                    instagram: "",
+                    capacity: "",
+                    allAges: "",
+                    address: "",
+                    addressPublic: ""
+
+                })
                     .then(() => {
-                        getProfiles()
-                        .then(() => {
-                            let foundProfile = profiles.find(profile => profile.userId === parseInt(localStorage.getItem("capstone_user"), 10)) ||{}
-                            props.history.push(`/bandProfiles/${foundProfile.id}`)
-                        })
+                        let userId = parseInt(localStorage.getItem("capstone_user"), 10)
+                        props.history.push(`/bandProfiles/${userId}`)
                     })
             } else {
-                let profile = {
-                    userId: parseInt(localStorage.getItem("capstone_user"), 10),
+                editUser({
+                    email: user.email,
+                    password: user.password,
+                    username: user.username,
+                    userType: user.userType,
                     name: bandName.current.value,
                     size: bandSize.current.value,
                     city: bandCity.current.value,
                     state: bandState.current.value,
-                    ... bandWebsite.current.value && { website: bandWebsite.current.value },
-                    ... bandBandcamp.current.value && { bandcamp: bandBandcamp.current.value },
-                    ... bandYoutube.current.value && { youtube: bandYoutube.current.value },
-                    ... bandFacebook.current.value && { facebook: bandFacebook.current.value },
-                    ... bandInstagram.current.value && { instagram: bandInstagram.current.value },
-                    ... bandTwitter.current.value && { twitter: bandTwitter.current.value },
-                    ... bandSpotify.current.value && { spotify: bandSpotify.current.value },
+                    website: bandWebsite.current.value,
+                    bandcamp: bandBandcamp.current.value,
+                    youtube: bandYoutube.current.value,
+                    facebook: bandFacebook.current.value,
+                    instagram: bandInstagram.current.value,
+                    twitter: bandTwitter.current.value,
+                    spotify: bandSpotify.current.value,
                     webPublic: webPublic,
-                    ... bandBlurb.current.value && { blurb: bandBlurb.current.value },
-                    blurbPublic: blurbPublic
-                }
-                addProfile(profile)
+                    blurb: bandBlurb.current.value,
+                    blurbPublic: blurbPublic,
+                    address2: "",
+                    address2Public: "",
+                    zip: "",
+                    zipPublic: "",
+                    facebook: "",
+                    instagram: "",
+                    capacity: "",
+                    allAges: "",
+                    address: "",
+                    addressPublic: ""
+                })
                     .then(() => {
-                        getProfiles()
-                        .then(() => {
-                            let foundProfile = profiles.find(profile => profile.userId === parseInt(localStorage.getItem("capstone_user"), 10)) ||{}
-                            props.history.push(`/bandProfiles/${foundProfile.id}`)
-                        })
+                        let userId = parseInt(localStorage.getItem("capstone_user"), 10)
+                        localStorage.setItem("profile", "set")
+                        props.history.push(`/bandProfiles/${userId}`)
                     })
-            }
+        }
     }
 
     
@@ -112,7 +133,7 @@ export default props => {
                         placeholder=""
                         // onChange={handleControlledInputChange}
                         ref={bandName}
-                        defaultValue={profile.name}
+                        defaultValue={user.name}
                     />
                 </div>
             </fieldset>
@@ -123,7 +144,7 @@ export default props => {
                         placeholder=""
                         // onChange={handleControlledInputChange}
                         ref={bandSize}
-                        defaultValue={profile.size}
+                        defaultValue={user.size}
                     />
                 </div>
             </fieldset>
@@ -134,7 +155,7 @@ export default props => {
                         placeholder=""
                         // onChange={handleControlledInputChange}
                         ref={bandCity}
-                        defaultValue={profile.city}
+                        defaultValue={user.city}
                     />
                 </div>
                 <label for="state">State</label>
@@ -167,42 +188,49 @@ export default props => {
                         placeholder=""
                         // onChange={handleControlledInputChange}
                         ref={bandWebsite}
+                        defaultValue={user.city}
                     />
                     <label htmlFor="spotify"> Spotify: </label>
                     <input type="text" name="spotify" autoFocus className="form-control"
                         placeholder=""
                         // onChange={handleControlledInputChange}
                         ref={bandSpotify}
+                        defaultValue={user.spotify}
                     />
                     <label htmlFor="bandcamp"> Bandcamp: </label>
                     <input type="text" name="bandcamp" autoFocus className="form-control"
                         placeholder=""
                         // onChange={handleControlledInputChange}
                         ref={bandBandcamp}
+                        defaultValue={user.bandcamp}
                     />
                     <label htmlFor="youtube"> Youtube: </label>
                     <input type="text" name="youtube" autoFocus className="form-control"
                         placeholder=""
                         // onChange={handleControlledInputChange}
                         ref={bandYoutube}
+                        defaultValue={user.youtube}
                     />
                     <label htmlFor="facebook"> Facebook: </label>
                     <input type="text" name="facebook" autoFocus className="form-control"
                         placeholder=""
                         // onChange={handleControlledInputChange}
                         ref={bandFacebook}
+                        defaultValue={user.facebook}
                     />
                     <label htmlFor="twitter"> Twitter: </label>
                     <input type="text" name="twitter" autoFocus className="form-control"
                         placeholder=""
                         // onChange={handleControlledInputChange}
                         ref={bandTwitter}
+                        defaultValue={user.twitter}
                     />
                     <label htmlFor="instagram"> Instagram: </label>
                     <input type="text" name="instagram" autoFocus className="form-control"
                         placeholder=""
                         // onChange={handleControlledInputChange}
                         ref={bandInstagram}
+                        defaultValue={user.instagram}
                     />
                 </div>
                 <fieldset className="bandProfileFieldset">
@@ -229,7 +257,7 @@ export default props => {
                 <div id="bandBlurb">
                     <div className="form-group" id="bandBlurbInnerDiv">
                         <label htmlFor="blurb">About us: </label>
-                        <textarea className="form-control" name="blurb" rows="7" cols="40" ref={bandBlurb} autoFocus></textarea>
+                        <textarea className="form-control" name="blurb" rows="7" cols="40" ref={bandBlurb} autoFocus defaultValue={user.blurb}></textarea>
                     </div>
                     <fieldset className="bandProfileFieldset">
                         <div className="form-group">

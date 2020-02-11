@@ -1,16 +1,16 @@
 import React, { useContext } from "react"
-import { ProfileContext } from "./ProfileProvider"
+import { UserContext } from "../user/UserProvider"
 
 export default (props) => {
-    const { profiles } = useContext(ProfileContext)
+    const { users } = useContext(UserContext)
 
     /*
         This line of code will be explained in the next
         section of the chapter.
     */
-    const chosenProfileId = parseInt(props.match.params.profileId, 10)
+    const chosenUserId = parseInt(props.match.params.userId, 10)
 
-    const profile = profiles.find(profile => profile.id === chosenProfileId) || {}
+    const user = users.find(user => user.id === chosenUserId) || {}
 
     let bandWebsite = ""
     let bandSpotify = ""
@@ -20,59 +20,59 @@ export default (props) => {
     let bandInstagram
     let bandTwitter = ""
 
-    if (profile.webPublic) {
-        if (profile.website) {
+    if (user.webPublic) {
+        if (user.website) {
             bandWebsite = <>
-            <div className="band__website"> <a href={profile.website}> {profile.website} </a> </div>
+            <div className="band__website"> <a href={user.website}> {user.website} </a> </div>
             </>
         }
-        if (profile.spotify) {
+        if (user.spotify) {
             bandSpotify = <>
-            <div className="band__spotify"> <a href={profile.spotify}> {profile.spotify} </a> </div>
+            <div className="band__spotify"> <a href={user.spotify}> {user.spotify} </a> </div>
             </>
         }
-        if (profile.bandcamp) {
+        if (user.bandcamp) {
             bandBandcamp = <>
-            <div className="band__bandcamp"> <a href={profile.bandcamp}> {profile.bandcamp} </a> </div>
+            <div className="band__bandcamp"> <a href={user.bandcamp}> {user.bandcamp} </a> </div>
             </>
         }
-        if (profile.bandcamp) {
+        if (user.bandcamp) {
             bandYoutube = <>
-            <div className="band__youtube"> <a href={profile.youtube}> {profile.youtube} </a> </div>
+            <div className="band__youtube"> <a href={user.youtube}> {user.youtube} </a> </div>
             </>
         }
-        if (profile.facebook) {
+        if (user.facebook) {
             bandFacebook = <>
-            <div className="band__facebook"> <a href={profile.facebook}> {profile.facebook} </a> </div>
+            <div className="band__facebook"> <a href={user.facebook}> {user.facebook} </a> </div>
             </>
         }
-        if (profile.instagram) {
+        if (user.instagram) {
             bandInstagram = <>
-            <div className="band__instagram"> <a href={profile.instagram}> {profile.instagram} </a> </div>
+            <div className="band__instagram"> <a href={user.instagram}> {user.instagram} </a> </div>
             </>
         }
-        if (profile.twitter) {
+        if (user.twitter) {
             bandTwitter = <>
-            <div className="band__twitter"> <a href={profile.twitter}> {profile.twitter} </a> </div>
+            <div className="band__twitter"> <a href={user.twitter}> {user.twitter} </a> </div>
             </>
         }
     }
 
     let bandBlurb = ""
 
-    if (profile.blurb && profile.blurbPublic) {
+    if (user.blurb && user.blurbPublic) {
         bandBlurb = <>
-        <div className="band__blurb"> { profile.blurb } </div>
+        <div className="band__blurb"> { user.blurb } </div>
         </>
     }
 
     return (
-        <section className="bandProfile">
-            <h3 className="band__name"> { profile.name } </h3>
-            <div className="band__size"> Size: { profile.size } </div>
+        <section className="banduser">
+            <h3 className="band__name"> { user.name } </h3>
+            <div className="band__size"> Size: { user.size } </div>
             <div className="band__fullAddress">
-                <div className="band__city"> { profile.city } </div>
-                <div className="band__state"> { profile.state } </div>
+                <div className="band__city"> { user.city } </div>
+                <div className="band__state"> { user.state } </div>
             </div>
             <div className="band_web">
                 {bandWebsite}
@@ -84,6 +84,9 @@ export default (props) => {
                 {bandYoutube}
             </div>
             {bandBlurb}
+            <button onClick={() => {
+                props.history.push(`/createBandProfile/${chosenUserId}`)
+            }}>Edit Profile</button>
         </section>
     )
 

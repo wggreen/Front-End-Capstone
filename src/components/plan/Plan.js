@@ -1,14 +1,15 @@
-import React, { useContext, useState } from "react"
+import React, {useContext, useState} from "react"
 import { withGoogleMap, GoogleMap, Marker, InfoWindow } from 'react-google-maps'
 import { AddressContext } from "../addresses/AddressProvider"
-import { ProfileContext } from "../profile/ProfileProvider"
+import { UserContext } from "../user/UserProvider"
+import { render } from '@testing-library/react'
 
 export default (props) => {
     
   const { addresses } = useContext(AddressContext)
-  const { profiles } = useContext(ProfileContext)
+  const { users } = useContext(UserContext)
 
-  let tourCards =""
+  let tourCards = []
 
   const PlanMap = withGoogleMap(props => (
     <GoogleMap google={window.google} defaultCenter = { { lat: 39.5, lng:  -98.35 } }
@@ -34,83 +35,82 @@ export default (props) => {
                   <span>{address.name}</span>
                   <div>
                     <button onClick={() => {
-                      let foundProfile = profiles.find(profile => profile.name === address.name)
-                      let foundProfileAddress = ""
-                      if (foundProfile.hasOwnProperty("address") && foundProfile.hasOwnProperty("addressPublic") && foundProfile.addressPublic === true) {
-                        foundProfileAddress = <>
-                        <div className="tourCard__address">{foundProfile.address}</div>
+                      let foundUser = users.find(user => user.name === address.name)
+                      let foundUserAddress = ""
+                      if (foundUser.hasOwnProperty("address") && foundUser.hasOwnProperty("addressPublic") && foundUser.addressPublic === true) {
+                        foundUserAddress = <>
+                        <div className="tourCard__address">{foundUser.address}</div>
                         </>
                       }
-                      let foundProfileAddress2 = ""
-                      if (foundProfile.hasOwnProperty("address2") && foundProfile.hasOwnProperty("address2Public") && foundProfile.address2Public === true) {
-                        foundProfileAddress2 = <>
-                        <div className="tourCard__address2">{foundProfile.address2}</div>
+                      let foundUserAddress2 = ""
+                      if (foundUser.hasOwnProperty("address2") && foundUser.hasOwnProperty("address2Public") && foundUser.address2Public === true) {
+                        foundUserAddress2 = <>
+                        <div className="tourCard__address2">{foundUser.address2}</div>
                         </>
                       }
-                      let foundProfileZip = ""
-                      if (foundProfile.hasOwnProperty("zip") && foundProfile.hasOwnProperty("zipPublic") && foundProfile.zipPublic === true) {
-                        foundProfileZip = <>
-                        <div className="tourCard__zip">{foundProfile.zip}</div>
+                      let foundUserZip = ""
+                      if (foundUser.hasOwnProperty("zip") && foundUser.hasOwnProperty("zipPublic") && foundUser.zipPublic === true) {
+                        foundUserZip = <>
+                        <div className="tourCard__zip">{foundUser.zip}</div>
                         </>
                       }
-                      let foundProfileBlurb = ""
-                      if (foundProfile.hasOwnProperty("blurb") && foundProfile.hasOwnProperty("blurbPublic") && foundProfile.blurbPublic === true) {
-                        foundProfileBlurb = <>
-                        <div className="tourCard__blurb">{foundProfile.blurb}</div>
+                      let foundUserBlurb = ""
+                      if (foundUser.hasOwnProperty("blurb") && foundUser.hasOwnProperty("blurbPublic") && foundUser.blurbPublic === true) {
+                        foundUserBlurb = <>
+                        <div className="tourCard__blurb">{foundUser.blurb}</div>
                         </>
                       }
                       let socialMediaButtonClicked = false
-                      let foundProfileWebsite = ""
-                      let foundProfileFacebook = ""
-                      let foundProfileInstagram = ""
-                      let foundProfileTwitter = ""
-                      let foundProfileSocialMedia = <>
+                      let foundUserWebsite = ""
+                      let foundUserFacebook = ""
+                      let foundUserInstagram = ""
+                      let foundUserTwitter = ""
+                      let foundUserSocialMedia = <>
                       <section className>
-                        {foundProfileWebsite}
-                        {foundProfileFacebook}
-                        {foundProfileInstagram}
-                        {foundProfileTwitter}
+                        {foundUserWebsite}
+                        {foundUserFacebook}
+                        {foundUserInstagram}
+                        {foundUserTwitter}
                       </section>
                       </>
-                      if (foundProfile.webPublic === true) {
-                        if (foundProfile.hasOwnProperty("website")) {
-                          foundProfileWebsite = <>
-                          <div className="tourCard__website">{foundProfile.website}</div>
+                      if (foundUser.webPublic === true) {
+                        if (foundUser.hasOwnProperty("website")) {
+                          foundUserWebsite = <>
+                          <div className="tourCard__website">{foundUser.website}</div>
                           </>
                         }
-                        if (foundProfile.hasOwnProperty("facebook")) {
-                          foundProfileFacebook = <>
-                          <div className="tourCard__facebook">{foundProfile.facebook}</div>
+                        if (foundUser.hasOwnProperty("facebook")) {
+                          foundUserFacebook = <>
+                          <div className="tourCard__facebook">{foundUser.facebook}</div>
                           </>
                         }
-                        if (foundProfile.hasOwnProperty("instagram")) {
-                          foundProfileInstagram = <>
-                          <div className="tourCard__instagram">{foundProfile.instagram}</div>
+                        if (foundUser.hasOwnProperty("instagram")) {
+                          foundUserInstagram = <>
+                          <div className="tourCard__instagram">{foundUser.instagram}</div>
                           </>
                         }
-                        if (foundProfile.hasOwnProperty("twitter")) {
-                          foundProfileInstagram = <>
-                          <div className="tourCard__twitter">{foundProfile.twitter}</div>
+                        if (foundUser.hasOwnProperty("twitter")) {
+                          foundUserInstagram = <>
+                          <div className="tourCard__twitter">{foundUser.twitter}</div>
                           </>
                         }
                       }
-                      console.log("tourCards before: ", tourCards)
-                      tourCards += <>
-                      <div className="tourCard">
+                      tourCards.push(
+                        <div className="tourCard" key={address.name}>
                           <h3 className="tourCard__header">{address.name}</h3>
-                          <div className="tourCard__capacity">Capacity: {foundProfile.capacity}</div>
-                          {foundProfileAddress}
-                          {foundProfileAddress2}
+                          <div className="tourCard__capacity">Capacity: {foundUser.capacity}</div>
+                          {foundUserAddress}
+                          {foundUserAddress2}
                           <section className="tourCard__cityStateZip">
-                            <div className="tourCard__city">{foundProfile.city}</div>
-                            <div className="tourCard__state">{foundProfile.state}</div>
-                            {foundProfileZip}
+                            <div className="tourCard__city">{foundUser.city}</div>
+                            <div className="tourCard__state">{foundUser.state}</div>
+                            {foundUserZip}
                           </section>
                           <h5 className="tourCard__blurbHeader">About Us</h5>
-                          {foundProfileBlurb}
+                          {foundUserBlurb}
                           {socialMediaButtonClicked ? (
                             <>
-                            {foundProfileSocialMedia}
+                            {foundUserSocialMedia}
                             </>
                           ) : (
                             <>
@@ -119,9 +119,10 @@ export default (props) => {
                             }}>Social media</button>
                             </>
                           )}
-                      </div>
-                      </>
-                      console.log("tourCards after: ", tourCards)
+                        </div>
+                  )
+                  console.log(tourCards)
+                  debugger
                     }}
                     >
                       Add to tour
@@ -146,7 +147,7 @@ export default (props) => {
           />
         </div>
         <section className="tourSection">
-          {tourCards}
+          {tourCards} 
         </section>
         
         </>
