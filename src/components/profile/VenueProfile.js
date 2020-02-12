@@ -1,20 +1,20 @@
 import React, { useContext } from "react"
-import { ProfileContext } from "./ProfileProvider"
+import { UserContext } from "../user/UserProvider"
 
 export default (props) => {
-    const { profiles } = useContext(ProfileContext)
+    const { users } = useContext(UserContext)
 
     /*
         This line of code will be explained in the next
         section of the chapter.
     */
-    const chosenProfileId = parseInt(props.match.params.profileId, 10)
+    const chosenUserId = parseInt(props.match.params.userId, 10)
 
-    const profile = profiles.find(profile => profile.id === chosenProfileId) || {}
+    const user = users.find(user => user.id === chosenUserId) || {}
 
     let allAges = ""
 
-    switch (profile.allAges) {
+    switch (user.allAges) {
         case "yes":
             allAges = "All ages";
             break;
@@ -22,32 +22,32 @@ export default (props) => {
             allAges = "18+";
             break;
         case "21+":
-            allAges = "21+";
+            allAges = "21+";    
             break;
     }
 
-    if (profile.allAges === "yes") {
+    if (user.allAges === "yes") {
         allAges = "allAges"
     }
 
     let venueAddress = ""
-    if (profile.address && profile.addressPublic) {
+    if (user.address && user.addressPublic) {
         venueAddress = <>
-            <div className="venue__address"> { profile.address } </div>
+            <div className="venue__address"> { user.address } </div>
             </>
     }
 
     let venueAddress2 = ""
-    if (profile.address2 && profile.address2Public) {
+    if (user.address2 && user.address2Public) {
         venueAddress2 = <>
-            <div className="venue__address2"> { profile.address2 } </div>
+            <div className="venue__address2"> { user.address2 } </div>
             </>
     }
 
     let venueZip =""
-    if (profile.zip && profile.zipPublic) {
+    if (user.zip && user.zipPublic) {
         venueZip = <>
-            <div className="venue__zip"> { profile.zip } </div>
+            <div className="venue__zip"> { user.zip } </div>
             </>
     }
 
@@ -56,47 +56,47 @@ export default (props) => {
     let venueInstagram = ""
     let venueTwitter = ""
 
-    if (profile.webPublic) {
-        if (profile.website) {
+    if (user.webPublic) {
+        if (user.website) {
             venueWebsite = <>
-            <div className="venue__website"> <a href={profile.website}> {profile.website} </a> </div>
+            <div className="venue__website"> <a href={user.website}> {user.website} </a> </div>
             </>
         }
-        if (profile.facebook) {
+        if (user.facebook) {
             venueFacebook = <>
-            <div className="venue__facebook"> <a href={profile.facebook}> {profile.facebook} </a> </div>
+            <div className="venue__facebook"> <a href={user.facebook}> {user.facebook} </a> </div>
             </>
         }
-        if (profile.instagram) {
+        if (user.instagram) {
             venueInstagram = <>
-            <div className="venue__instagram"> <a href={profile.instagram}> {profile.instagram} </a> </div>
+            <div className="venue__instagram"> <a href={user.instagram}> {user.instagram} </a> </div>
             </>
         }
-        if (profile.twitter) {
+        if (user.twitter) {
             venueTwitter = <>
-            <div className="venue__twitter"> <a href={profile.twitter}> {profile.twitter} </a> </div>
+            <div className="venue__twitter"> <a href={user.twitter}> {user.twitter} </a> </div>
             </>
         }
     }
 
     let venueBlurb = ""
 
-    if (profile.blurb && profile.blurbPublic) {
+    if (user.blurb && user.blurbPublic) {
         venueBlurb = <>
-        <div className="venue__blurb"> { profile.blurb } </div>
+        <div className="venue__blurb"> { user.blurb } </div>
         </>
     }
 
     return (
-        <section className="venueProfile">
-            <h3 className="venue__name"> { profile.name } </h3>
-            <div className="venue__capacity"> Capacity: { profile.capacity } </div>
+        <section className="venueuser">
+            <h3 className="venue__name"> { user.name } </h3>
+            <div className="venue__capacity"> Capacity: { user.capacity } </div>
             <div className="venue__allAges"> {allAges} </div>
             <div className="venue__fullAddress">
                 {venueAddress}
                 {venueAddress2}
-                <div className="venue__city"> { profile.city } </div>
-                <div className="venue__state"> { profile.state } </div>
+                <div className="venue__city"> { user.city } </div>
+                <div className="venue__state"> { user.state } </div>
                 {venueZip}
             </div>
             <div className="venue_web">
@@ -106,6 +106,9 @@ export default (props) => {
                 {venueTwitter}
             </div>
             {venueBlurb}
+            <button onClick={() => {
+                props.history.push(`/createVenueProfile/${chosenUserId}`)
+            }}>Edit Profile</button>
         </section>
     )
 

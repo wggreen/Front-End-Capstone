@@ -1,4 +1,5 @@
-import React, { useRef, useState } from "react"
+import React, { useRef, useState, useContext } from "react"
+import { UserContext } from "../user/UserProvider"
 import "./Login.css"
 
 const Register = props => {
@@ -10,6 +11,8 @@ const Register = props => {
 
     const [verifyEmailResult, setVerifyEmailResult] = useState(false)
     const [userType, setUserType] = useState()
+
+    const { getUsers } = useContext(UserContext) 
 
     const existingUserCheck = () => {
         return fetch(`http://localhost:8088/users?username=${username.current.value}`)
@@ -47,7 +50,7 @@ const Register = props => {
                                 if (results) {
                                     let truth = true
                                     setVerifyEmailResult(truth)
-                                    // window.alert("That email address is already in use")
+                                    window.alert("That email address is already in use")
                                 } else {
                                     if (password.current.value === verifyPassword.current.value) {
                                         fetch("http://localhost:8088/users", {
@@ -59,34 +62,42 @@ const Register = props => {
                                                 email: email.current.value,
                                                 password: password.current.value,
                                                 username: username.current.value,
-                                                userTypeId: userType
+                                                userType: userType
                                             })
                                         })
-                                            .then(res => res.json())
+                                            .then(_ => _.json())
                                             .then(createdUser => {
                                                 if (createdUser.hasOwnProperty("id")) {
                                                     localStorage.setItem("capstone_user", createdUser.id)
-                                                    if (createdUser.userTypeId === 1) {
+                                                    if (createdUser.userType === "band") {
                                                         localStorage.setItem("userType", "band")
-                                                        props.history.push("/createBandProfile")
+                                                        props.history.push(`/createBandProfile/${createdUser.id}`)
+                                                        getUsers()
                                                     }
-                                                    if (createdUser.userTypeId === 2) {
+                                                    if (createdUser.userType === "venue") {
                                                         localStorage.setItem("userType", "venue")
-                                                        props.history.push("/createVenueProfile")
+                                                        props.history.push(`/createVenueProfile/${createdUser.id}`)
+                                                        getUsers()
                                                     }
                                                 }
-                                            })
-                                    } else {
+                                                }
+                                            )}
+                                    else {
                                         window.alert("The passwords don't match")
                                     }
                                 }
-                             })
-                    } else {
-                        window.alert("The email addresses do not match")
+                            })
+                        }
+                        else {
+                            window.alert("The email addresses don't match")
+                        }
                     }
-                }
-            })
-    }
+                })
+            }
+
+                                        
+                                    
+
 
     return (
         <main>
@@ -165,30 +176,20 @@ const Register = props => {
                             placeholder=""
                             required />
                     </fieldset>
-                    {/* <fieldset className="selectTypeContainer registerFieldset">
-                        <label htmlFor="select">What type of account do you need? </label>
-                        <select className="dropdown" id="userDropdown" name="select"
-                            ref={userType}>
-                            <option value="0">Please select an option...</option>
-                            <option value="1">Band</option>
-                            <option value="2">Venue</option>
-                        </select>
-                    </fieldset> */}
                     <fieldset className="venueProfileFieldset">
                         <div id="registerAccountType">
                             <legend>What type of account do you need?</legend>
                             <div className="form-group">
                             <label for="band"> 
                                 <input type="radio" name="band" value="band" onChange={() => {
-                                    let band = 1
-                                    setUserType(1)
+                                    setUserType("band")
                                 }}/>
                                 Band 
                             </label>
                             <label for="venue"> 
                                 <input type="radio" name="band" value="venue" onChange={() => {
                                     let venue = 2
-                                    setUserType(2)
+                                    setUserType("venue")
                                 }}/>
                                 Venue 
                             </label>

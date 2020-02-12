@@ -1,16 +1,17 @@
-import React, { useContext, useState } from "react"
+import React, {useContext, useState} from "react"
 import { withGoogleMap, GoogleMap, Marker, InfoWindow } from 'react-google-maps'
 import { AddressContext } from "../addresses/AddressProvider"
-import { ProfileContext } from "../profile/ProfileProvider"
+import { UserContext } from "../user/UserProvider"
+import "./Plan.css"
 
 export default (props) => {
     
   const { addresses } = useContext(AddressContext)
-  const { profiles } = useContext(ProfileContext)
+  const { users } = useContext(UserContext)
+  const [tourCards, setTourCards] = useState([])
+  const [socialMediaButtonClicked, setSocialMediaButtonClicked] = useState(false)
 
-  let tourCards =""
-
-  const PlanMap = withGoogleMap(props => (
+  const PlanMap = withGoogleMap(properties => (
     <GoogleMap google={window.google} defaultCenter = { { lat: 39.5, lng:  -98.35 } }
     defaultZoom = { 4 }>
           {
@@ -34,94 +35,80 @@ export default (props) => {
                   <span>{address.name}</span>
                   <div>
                     <button onClick={() => {
-                      let foundProfile = profiles.find(profile => profile.name === address.name)
-                      let foundProfileAddress = ""
-                      if (foundProfile.hasOwnProperty("address") && foundProfile.hasOwnProperty("addressPublic") && foundProfile.addressPublic === true) {
-                        foundProfileAddress = <>
-                        <div className="tourCard__address">{foundProfile.address}</div>
+                      debugger
+                      let foundVenue = users.find(user => user.name === address.name)
+                      let foundVenueAddress = ""
+                      if (foundVenue.hasOwnProperty("address") && foundVenue.hasOwnProperty("addressPublic") && foundVenue.addressPublic === true) {
+                        foundVenueAddress = <>
+                        <div className="tourCard__address">{foundVenue.address}</div>
                         </>
                       }
-                      let foundProfileAddress2 = ""
-                      if (foundProfile.hasOwnProperty("address2") && foundProfile.hasOwnProperty("address2Public") && foundProfile.address2Public === true) {
-                        foundProfileAddress2 = <>
-                        <div className="tourCard__address2">{foundProfile.address2}</div>
+                      let foundVenueAddress2 = ""
+                      if (foundVenue.hasOwnProperty("address2") && foundVenue.hasOwnProperty("address2Public") && foundVenue.address2Public === true) {
+                        foundVenueAddress2 = <>
+                        <div className="tourCard__address2">{foundVenue.address2}</div>
                         </>
                       }
-                      let foundProfileZip = ""
-                      if (foundProfile.hasOwnProperty("zip") && foundProfile.hasOwnProperty("zipPublic") && foundProfile.zipPublic === true) {
-                        foundProfileZip = <>
-                        <div className="tourCard__zip">{foundProfile.zip}</div>
+                      let foundVenueZip = ""
+                      if (foundVenue.hasOwnProperty("zip") && foundVenue.hasOwnProperty("zipPublic") && foundVenue.zipPublic === true) {
+                        foundVenueZip = <>
+                        <div className="tourCard__zip">{foundVenue.zip}</div>
                         </>
                       }
-                      let foundProfileBlurb = ""
-                      if (foundProfile.hasOwnProperty("blurb") && foundProfile.hasOwnProperty("blurbPublic") && foundProfile.blurbPublic === true) {
-                        foundProfileBlurb = <>
-                        <div className="tourCard__blurb">{foundProfile.blurb}</div>
+                      let foundVenueBlurb = ""
+                      if (foundVenue.hasOwnProperty("blurb") && foundVenue.hasOwnProperty("blurbPublic") && foundVenue.blurbPublic === true) {
+                        foundVenueBlurb = <>
+                        <h5 className="tourCard__blurbHeader">About Us</h5>
+                        <div className="tourCard__blurb">{foundVenue.blurb}</div>
                         </>
                       }
-                      let socialMediaButtonClicked = false
-                      let foundProfileWebsite = ""
-                      let foundProfileFacebook = ""
-                      let foundProfileInstagram = ""
-                      let foundProfileTwitter = ""
-                      let foundProfileSocialMedia = <>
-                      <section className>
-                        {foundProfileWebsite}
-                        {foundProfileFacebook}
-                        {foundProfileInstagram}
-                        {foundProfileTwitter}
-                      </section>
-                      </>
-                      if (foundProfile.webPublic === true) {
-                        if (foundProfile.hasOwnProperty("website")) {
-                          foundProfileWebsite = <>
-                          <div className="tourCard__website">{foundProfile.website}</div>
+                      let foundVenueWebsite = ""
+                      let foundVenueFacebook = ""
+                      let foundVenueInstagram = ""
+                      let foundVenueTwitter = ""
+                      if (foundVenue.webPublic === true) {
+                        if (foundVenue.hasOwnProperty("website")) {
+                          foundVenueWebsite = <>
+                          <div className="tourCard__website">{foundVenue.website}</div>
                           </>
                         }
-                        if (foundProfile.hasOwnProperty("facebook")) {
-                          foundProfileFacebook = <>
-                          <div className="tourCard__facebook">{foundProfile.facebook}</div>
+                        if (foundVenue.hasOwnProperty("facebook")) {
+                          foundVenueFacebook = <>
+                          <div className="tourCard__facebook">{foundVenue.facebook}</div>
                           </>
                         }
-                        if (foundProfile.hasOwnProperty("instagram")) {
-                          foundProfileInstagram = <>
-                          <div className="tourCard__instagram">{foundProfile.instagram}</div>
+                        if (foundVenue.hasOwnProperty("instagram")) {
+                          foundVenueInstagram = <>
+                          <div className="tourCard__instagram">{foundVenue.instagram}</div>
                           </>
                         }
-                        if (foundProfile.hasOwnProperty("twitter")) {
-                          foundProfileInstagram = <>
-                          <div className="tourCard__twitter">{foundProfile.twitter}</div>
+                        if (foundVenue.hasOwnProperty("twitter")) {
+                          foundVenueInstagram = <>
+                          <div className="tourCard__twitter">{foundVenue.twitter}</div>
                           </>
                         }
                       }
-                      console.log("tourCards before: ", tourCards)
-                      tourCards += <>
-                      <div className="tourCard">
+                      let tourCard = 
+                        <div className="tourCard" key={address.name}>
                           <h3 className="tourCard__header">{address.name}</h3>
-                          <div className="tourCard__capacity">Capacity: {foundProfile.capacity}</div>
-                          {foundProfileAddress}
-                          {foundProfileAddress2}
+                          <div className="tourCard__capacity">Capacity: {foundVenue.capacity}</div>
+                          {foundVenueAddress}
+                          {foundVenueAddress2}
                           <section className="tourCard__cityStateZip">
-                            <div className="tourCard__city">{foundProfile.city}</div>
-                            <div className="tourCard__state">{foundProfile.state}</div>
-                            {foundProfileZip}
+                            <div className="tourCard__city">{foundVenue.city}</div>
+                            <div className="tourCard__state">{foundVenue.state}</div>
+                            {foundVenueZip}
                           </section>
-                          <h5 className="tourCard__blurbHeader">About Us</h5>
-                          {foundProfileBlurb}
-                          {socialMediaButtonClicked ? (
-                            <>
-                            {foundProfileSocialMedia}
-                            </>
-                          ) : (
-                            <>
-                            <button onClick={() => {
-                              socialMediaButtonClicked = true
-                            }}>Social media</button>
-                            </>
-                          )}
-                      </div>
-                      </>
-                      console.log("tourCards after: ", tourCards)
+                          {foundVenueBlurb}
+                          {foundVenueWebsite}
+                          {foundVenueFacebook}
+                          {foundVenueInstagram}
+                          {foundVenueTwitter}
+                          <button onClick={() =>{
+                            props.history.push(`/plan/${foundVenue.id}`)
+                          }}>Book here</button>
+                        </div>
+                      setTourCards(cards => [...cards, tourCard])
                     }}
                     >
                       Add to tour
@@ -136,20 +123,21 @@ export default (props) => {
           </GoogleMap>
   ));
 
-    return (
-      <>
-        <div>
-          <PlanMap
-          loadingElement={<div style={{ height: `100%` }} />}
-          containerElement={<div style={{ height: `400px`, width: `400px` }} />}
-          mapElement={<div style={{ height: `100%` }} />}
-          />
-        </div>
-        <section className="tourSection">
-          {tourCards}
-        </section>
-        
-        </>
-    )
+      return (
+          <>
+          <section className="planSection">
+            <div>
+              <PlanMap
+              loadingElement={<div style={{ height: `100%` }} />}
+              containerElement={<div style={{ height: `400px`, width: `400px` }} />}
+              mapElement={<div style={{ height: `100%` }} />}
+              />
+            </div>
+            <section className="tourSection">
+              {tourCards} 
+            </section>
+          </section>
+            </>
+        )
 
 }

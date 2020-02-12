@@ -25,10 +25,11 @@ const Login = props => {
             .then(exists => {
                 if (exists && exists.password === password.current.value) {
                     localStorage.setItem("capstone_user", exists.id)
-                    if (exists.userTypeId === 1) {
+                    localStorage.setItem("profile", "set")
+                    if (exists.userType === "band") {
                         localStorage.setItem("userType", "band")
                     }
-                    if (exists.userTypeId === 2) {
+                    if (exists.userType === "venue") {
                         localStorage.setItem("userType", "venue")
                     }
                     props.history.push("/")

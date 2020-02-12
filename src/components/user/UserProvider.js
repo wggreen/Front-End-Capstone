@@ -18,6 +18,17 @@ export const UserProvider = props => {
       .then(getUsers)
   }
 
+  const addUser = user => {
+    return fetch("http://localhost:8088/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(user)
+    })
+    .then(getUsers)
+  }
+
   const editUser = user => {
     return fetch(`http://localhost:8088/users/${user.id}`, {
       method: "PUT",
@@ -42,7 +53,9 @@ export const UserProvider = props => {
       value={{
         users,
         deleteUser,
-        editUser
+        editUser,
+        addUser,
+        getUsers
       }}
     >
       {props.children}
