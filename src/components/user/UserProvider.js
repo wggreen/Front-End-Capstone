@@ -54,7 +54,8 @@ export const UserProvider = props => {
         users,
         deleteUser,
         editUser,
-        addUser
+        addUser,
+        getUsers
       }}
     >
       {props.children}

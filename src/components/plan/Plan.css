@@ -1,0 +1,19 @@
+.planSection {
+    display: flex;
+    flex-direction: row;
+}
+
+.tourSection {
+    display: flex;
+    flex-direction: column;
+    margin-left: 50px;
+}
+
+.tourCard__header {
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+
+.tourCard{
+    margin-top: 10px;
+}

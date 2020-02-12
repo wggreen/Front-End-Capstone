@@ -8,7 +8,7 @@ import VenueProfile from "./profile/VenueProfile"
 import VenueProfileForm from "./profile/VenueProfileForm"
 import NavBar from "./nav/NavBar"
 import Plan from "./plan/Plan"
-import MarkerList from "./plan/MarkerList"
+import BookVenue from "./book/BookVenue"
 import { UserProvider } from "./user/UserProvider"
 import { AddressProvider } from "./addresses/AddressProvider"
 
@@ -44,6 +44,7 @@ export default props => {
                 props => <BandProfileForm {...props} />
               } />
               <Route exact path="/plan" render={props => <Plan {...props} />} />
+              <Route exact path="/plan/:userId(\d+)" render={props => <BookVenue {...props} />} />
               <Route path="/createVenueProfile/:userId(\d+)" render={
                 props => <VenueProfileForm {...props} />
               } />

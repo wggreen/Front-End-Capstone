@@ -4,7 +4,7 @@ import { UserContext } from "../user/UserProvider"
 import "./Profile.css"
 
 export default props => {
-    const { editUser, users, addUser } = useContext(UserContext)
+    const { editUser, users } = useContext(UserContext)
     const { addAddress, editAddress } = useContext(AddressContext)
     const venueName = useRef()
     const venueCapacity = useRef()
@@ -26,6 +26,9 @@ export default props => {
     const [webPublic, setWebPublic] = useState()
     const [blurbPublic, setBlurbPublic] = useState()
 
+    console.log(users)
+    debugger
+
     const editMode = props.match.params.hasOwnProperty("userId")
 
     // const handleControlledInputChange = (event) => {
@@ -42,6 +45,7 @@ export default props => {
         if (editMode) {
             const userId = parseInt(props.match.params.userId)
             const seletedUser = users.find(user => user.id === userId) ||{}
+            debugger
             setUser(seletedUser)
         }
     }
@@ -51,7 +55,8 @@ export default props => {
     }, [users])
 
     const constructNewProfile = () => {
-            if (editMode) {
+            if (editMode && localStorage.getItem("profile") === "set") {
+                debugger
                 editUser({
                     email: user.email,
                     password: user.password,
@@ -111,7 +116,7 @@ export default props => {
                                             id: parseInt(localStorage.getItem("capstone_user"), 10)
                                         }
                                         let userId = parseInt(localStorage.getItem("capstone_user"), 10)
-                                        addAddress(addressObject)
+                                        editAddress(addressObject)
                                         .then(() => {
                                             props.history.push(`/venueProfiles/${userId}`)
                                         })
@@ -119,7 +124,9 @@ export default props => {
                         });
                     })
                 }
-             else {
+             if (editMode && localStorage.getItem("profile") != "set") {
+                 console.log(user)
+                 debugger
                 editUser({
                     email: user.email,
                     password: user.password,
@@ -150,6 +157,8 @@ export default props => {
                     spotify: ""
                 })
                 .then(() => {
+                    console.log(users)
+                    debugger
                     let address = {
                         address: venueAddress.current.value,
                         addressPublic: addressPublic,

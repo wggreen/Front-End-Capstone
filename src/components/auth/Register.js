@@ -12,7 +12,7 @@ const Register = props => {
     const [verifyEmailResult, setVerifyEmailResult] = useState(false)
     const [userType, setUserType] = useState()
 
-    const { users, addUser } = useContext(UserContext) 
+    const { getUsers } = useContext(UserContext) 
 
     const existingUserCheck = () => {
         return fetch(`http://localhost:8088/users?username=${username.current.value}`)
@@ -72,10 +72,12 @@ const Register = props => {
                                                     if (createdUser.userType === "band") {
                                                         localStorage.setItem("userType", "band")
                                                         props.history.push(`/createBandProfile/${createdUser.id}`)
+                                                        getUsers()
                                                     }
                                                     if (createdUser.userType === "venue") {
                                                         localStorage.setItem("userType", "venue")
                                                         props.history.push(`/createVenueProfile/${createdUser.id}`)
+                                                        getUsers()
                                                     }
                                                 }
                                                 }
