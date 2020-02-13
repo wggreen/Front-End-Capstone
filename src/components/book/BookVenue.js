@@ -1,21 +1,37 @@
-import React from "react"
+import React, { useState } from "react"
 import { Route } from "react-router-dom"
-import InfiniteCalendar, { withRange, Calendar } from 'react-infinite-calendar';
+import InfiniteCalendar, { withMultipleDates, Calendar, defaultMultipleDateInterpolation } from 'react-infinite-calendar';
 import 'react-infinite-calendar/styles.css'; // only needs to be imported once
 
+
 export default props => {
-    var today = new Date();
+  const [selectedDates, setSelectedDates] = useState([new Date()])
+    let onCalendarSelect = () => {
+        console.log("hello world")
+    }
+
+    let selectedDate = ""
+    console.log(selectedDates)
+
+    const MultipleDatesCalendar = withMultipleDates(Calendar)
+      
     return (
       <>
+            <section>
             <InfiniteCalendar
-            onSelect={function(date) {
-                alert('You selected: ' + format(date, 'ddd, MMM Do YYYY'))
-             }}
-            Component={withRange(Calendar)}
-            width={400}
-            height={600}
-            selected={today}
-            minDate={today}/>
+            Component={withMultipleDates(Calendar)}
+            interpolateSelection={defaultMultipleDateInterpolation}
+            selected={selectedDates}
+            minDate={selectedDates}
+            onSelect={(selectedDate) => defaultMultipleDateInterpolation(selectedDate, selectedDates)}
+            />
+            {selectedDate}
+            </section>
+            <MultipleDatesCalendar
+            selected={selectedDates}
+            minDate={selectedDates}
+            onSelect={(selectedDate) => defaultMultipleDateInterpolation(selectedDate, selectedDates)}
+            />
       </>
     );
   };

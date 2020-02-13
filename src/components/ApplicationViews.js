@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { Route } from "react-router-dom"
 import Login from "./auth/Login"
 import Register from "./auth/Register"
@@ -14,6 +14,17 @@ import { AddressProvider } from "./addresses/AddressProvider"
 
 
 export default props => {
+
+  const [tourCards, setTourCards] = useState([])
+  const [polylinePath, setPolylinePath] = useState([])
+
+  const removeIndex = (index) => {
+    debugger
+    let holdingArray = tourCards
+    holdingArray.splice(index, 1)
+    setTourCards(holdingArray)
+  }
+
     return (
       <>
           <Route
@@ -43,7 +54,13 @@ export default props => {
               <Route path="/createBandProfile/:userId(\d+)" render={
                 props => <BandProfileForm {...props} />
               } />
-              <Route exact path="/plan" render={props => <Plan {...props} />} />
+              <Route exact path="/plan" render={props => <Plan {...props} 
+                setTourCards={setTourCards} 
+                tourCards={tourCards} 
+                polylinePath={polylinePath} 
+                removeIndex={removeIndex}
+                setPolylinePath={setPolylinePath}/>} />
+
               <Route exact path="/plan/:userId(\d+)" render={props => <BookVenue {...props} />} />
               <Route path="/createVenueProfile/:userId(\d+)" render={
                 props => <VenueProfileForm {...props} />

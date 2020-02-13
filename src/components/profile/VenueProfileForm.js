@@ -27,7 +27,7 @@ export default props => {
     const [blurbPublic, setBlurbPublic] = useState()
 
     console.log(users)
-    debugger
+    
 
     const editMode = props.match.params.hasOwnProperty("userId")
 
@@ -45,7 +45,7 @@ export default props => {
         if (editMode) {
             const userId = parseInt(props.match.params.userId)
             const seletedUser = users.find(user => user.id === userId) ||{}
-            debugger
+            
             setUser(seletedUser)
         }
     }
@@ -56,7 +56,7 @@ export default props => {
 
     const constructNewProfile = () => {
             if (editMode && localStorage.getItem("profile") === "set") {
-                debugger
+                
                 editUser({
                     email: user.email,
                     password: user.password,
@@ -126,7 +126,7 @@ export default props => {
                 }
              if (editMode && localStorage.getItem("profile") != "set") {
                  console.log(user)
-                 debugger
+                 
                 editUser({
                     email: user.email,
                     password: user.password,
@@ -158,7 +158,7 @@ export default props => {
                 })
                 .then(() => {
                     console.log(users)
-                    debugger
+                    
                     let address = {
                         address: venueAddress.current.value,
                         addressPublic: addressPublic,
