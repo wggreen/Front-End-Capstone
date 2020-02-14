@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Route } from "react-router-dom"
 import Login from "./auth/Login"
 import Register from "./auth/Register"
@@ -18,11 +18,8 @@ export default props => {
   const [tourCards, setTourCards] = useState([])
   const [polylinePath, setPolylinePath] = useState([])
 
-  const removeIndex = (index) => {
-    debugger
-    let holdingArray = tourCards
-    holdingArray.splice(index, 1)
-    setTourCards(holdingArray)
+  const viewStateOfTourCards = () => {
+    console.log(tourCards)
   }
 
     return (
@@ -58,8 +55,8 @@ export default props => {
                 setTourCards={setTourCards} 
                 tourCards={tourCards} 
                 polylinePath={polylinePath} 
-                removeIndex={removeIndex}
-                setPolylinePath={setPolylinePath}/>} />
+                setPolylinePath={setPolylinePath}
+                viewStateOfTourCards={viewStateOfTourCards}/>} />
 
               <Route exact path="/plan/:userId(\d+)" render={props => <BookVenue {...props} />} />
               <Route path="/createVenueProfile/:userId(\d+)" render={

@@ -25,10 +25,7 @@ export default props => {
     const [zipPublic, setZipPublic] = useState()
     const [webPublic, setWebPublic] = useState()
     const [blurbPublic, setBlurbPublic] = useState()
-
-    console.log(users)
     
-
     const editMode = props.match.params.hasOwnProperty("userId")
 
     // const handleControlledInputChange = (event) => {
@@ -125,7 +122,6 @@ export default props => {
                     })
                 }
              if (editMode && localStorage.getItem("profile") != "set") {
-                 console.log(user)
                  
                 editUser({
                     email: user.email,
@@ -157,8 +153,6 @@ export default props => {
                     spotify: ""
                 })
                 .then(() => {
-                    console.log(users)
-                    
                     let address = {
                         address: venueAddress.current.value,
                         addressPublic: addressPublic,

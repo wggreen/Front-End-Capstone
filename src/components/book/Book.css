@@ -1,0 +1,14 @@
+.calendarSection {
+    display: flex;
+    flex-direction: row;
+}
+
+.potentialDates {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+
+.potentialDates__header{
+    margin-top: 0px;
+}

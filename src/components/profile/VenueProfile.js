@@ -95,8 +95,8 @@ export default (props) => {
             <div className="venue__fullAddress">
                 {venueAddress}
                 {venueAddress2}
-                <div className="venue__city"> { user.city } </div>
-                <div className="venue__state"> { user.state } </div>
+                <div className="venue__city"> { user.city },  </div>
+                <div className="venue__state">  { user.state } </div>
                 {venueZip}
             </div>
             <div className="venue_web">
