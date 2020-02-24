@@ -12,10 +12,7 @@ export default (props) => {
   const { tours, deleteTour, addTour, getTours } = useContext(TourContext) || {}
   const { bookings, deleteBooking, addBooking, getBookings } = useContext(BookingContext) || {}
   const { bookingsTours, deleteBookingTour, addBookingTour, getBookingsTours } = useContext(BookingTourContext) || {}
-  const [tourNameEntered, setTourNameEntered] = useState(false)
-  const [currentTour, setCurrentTour] = useState({})
-  let currentBooking = {}
-  let currentBookingTour = {}
+
   const tourNameRef = useRef("")
 
   let lineSymbol = {
@@ -74,7 +71,7 @@ export default (props) => {
                           .then((createdBooking) => createdBooking.json())
 
                           .then(createdBooking => {
-                            currentBooking = createdBooking
+                            props.setCurrentBooking(createdBooking)
                             return createdBooking
                           })
 
@@ -82,7 +79,7 @@ export default (props) => {
                             addBookingTour(constructNewBookingTour(createdBooking))
 
                               .then((createdBookingTour) => {
-                                currentBookingTour = createdBookingTour
+                                props.setCurrentBooking(createdBookingTour)
                                 return createdBookingTour
                               })
 
@@ -126,13 +123,30 @@ export default (props) => {
     let holdingArray = props.tourCards.slice()
     props.setTourCards(holdingArray)
     if (holdingArray.length > 0) {
-      deleteBooking(currentBooking)
+      deleteBooking(props.currentBooking)
         .then(() => getBookings())
         .then(() => {
-          let foundBookingTour = bookingsTours.find(bookingTour => bookingTour.bookingId === currentBooking.id)
+          let foundBookingTour = bookingsTours.find(bookingTour => bookingTour.bookingId === props.currentBooking.id)
           deleteBookingTour(foundBookingTour)
         })
     }
+  }
+
+  const constructNewTour = () => {
+    let newTour =
+    {
+      bandId: parseInt(localStorage.getItem("capstone_user"), 10),
+      name: tourNameRef.current.value,
+      saved: false
+    }
+    addTour(newTour)
+      .then((createdTour) => createdTour.json())
+      .then((createdTour) => {
+        debugger
+        props.setCurrentTour(createdTour)
+        debugger
+        props.setTourNameEntered(true)
+      })
   }
 
   const constructNewBooking = (address) => {
@@ -147,17 +161,17 @@ export default (props) => {
   const constructNewBookingTour = (currentBooking) => {
     let newBookingTour = {
       bandId: parseInt(localStorage.getItem("capstone_user"), 10),
-      venueId: currentBooking.venueId,
-      bookingId: currentBooking.id,
-      tourId: currentTour.id,
-      bookingName: currentBooking.name,
-      tourName: currentTour.name
+      venueId: props.currentBooking.venueId,
+      bookingId: props.currentBooking.id,
+      tourId: props.currentTour.id,
+      bookingName: props.currentBooking.name,
+      tourName: props.currentTour.name
     }
     return newBookingTour
   }
 
   const clearTour = () => {
-    let foundTour = tours.find(tour => tour.name === currentTour.name)
+    let foundTour = tours.find(tour => tour.name === props.currentTour.name)
     deleteTour(foundTour)
     let relatedBookingTours = []
     let relatedBookings = []
@@ -192,9 +206,9 @@ export default (props) => {
           />
         </div>
         <section className="tourSection">
-          {tourNameEntered ? (
+          {props.tourNameEntered ? (
             <>
-              <h2>{currentTour.name}</h2>
+              <h2>{props.currentTour.name}</h2>
               <section className="tourButtonSection">
                 <button onClick={() => {
                   if (props.tourCards.length === 0) {
@@ -202,9 +216,9 @@ export default (props) => {
                   } else {
                     clearTour()
                     props.setTourCards("")
-                    let foundTour = tours.find(tour => tour.name === currentTour.name)
+                    let foundTour = tours.find(tour => tour.name === props.currentTour.name)
                     foundTour.saved = true
-                    setTourNameEntered(false)
+                    props.setTourNameEntered(false)
                   }
                 }}>
                   Save tour
@@ -238,19 +252,7 @@ export default (props) => {
                     <button id="eventFormSubmitButton" type="submit"
                       onClick={evt => {
                         evt.preventDefault()
-                        setTourNameEntered(true)
-                        let newTour =
-                        {
-                          bandId: parseInt(localStorage.getItem("capstone_user"), 10),
-                          name: tourNameRef.current.value,
-                          saved: false
-                        }
-                        addTour(newTour)
-                          .then((createdTour) => createdTour.json())
-                          .then((createdTour) => {
-                            setCurrentTour(createdTour) 
-                            return createdTour
-                          })
+                        constructNewTour()
                       }}
                       className="btn btn-primary">
                       {/* {editMode ? "Save Edit" : "Save Event"} */}

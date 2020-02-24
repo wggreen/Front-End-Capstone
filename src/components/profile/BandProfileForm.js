@@ -35,7 +35,7 @@ export default props => {
     const setDefaults = () => {
         if (editMode) {
             const userId = parseInt(props.match.params.userId)
-            const seletedUser = users.find(user => user.id === userId) ||{}
+            const seletedUser = users.find(user => user.id === userId) || {}
             setUser(seletedUser)
         }
     }
@@ -45,83 +45,83 @@ export default props => {
     }, [users])
 
     const constructNewProfile = () => {
-            if (editMode) {
-                editUser({
-                    email: user.email,
-                    password: user.password,
-                    username: user.username,
-                    userType: user.userType,
-                    id: user.id,
-                    name: bandName.current.value,
-                    size: bandSize.current.value,
-                    city: bandCity.current.value,
-                    state: bandState.current.value,
-                    website: bandWebsite.current.value,
-                    bandcamp: bandBandcamp.current.value,
-                    youtube: bandYoutube.current.value,
-                    facebook: bandFacebook.current.value,
-                    instagram: bandInstagram.current.value,
-                    twitter: bandTwitter.current.value,
-                    spotify: bandSpotify.current.value,
-                    webPublic: webPublic,
-                    blurb: bandBlurb.current.value,
-                    blurbPublic: blurbPublic,
-                    address2: "",
-                    address2Public: "",
-                    zip: "",
-                    zipPublic: "",
-                    facebook: "",
-                    instagram: "",
-                    capacity: "",
-                    allAges: "",
-                    address: "",
-                    addressPublic: ""
+        if (editMode) {
+            editUser({
+                email: user.email,
+                password: user.password,
+                username: user.username,
+                userType: user.userType,
+                id: user.id,
+                name: bandName.current.value,
+                size: bandSize.current.value,
+                city: bandCity.current.value,
+                state: bandState.current.value,
+                website: bandWebsite.current.value,
+                bandcamp: bandBandcamp.current.value,
+                youtube: bandYoutube.current.value,
+                facebook: bandFacebook.current.value,
+                instagram: bandInstagram.current.value,
+                twitter: bandTwitter.current.value,
+                spotify: bandSpotify.current.value,
+                webPublic: webPublic,
+                blurb: bandBlurb.current.value,
+                blurbPublic: blurbPublic,
+                address2: "",
+                address2Public: "",
+                zip: "",
+                zipPublic: "",
+                facebook: "",
+                instagram: "",
+                capacity: "",
+                allAges: "",
+                address: "",
+                addressPublic: ""
 
+            })
+                .then(() => {
+                    let userId = parseInt(localStorage.getItem("capstone_user"), 10)
+                    props.history.push(`/bandProfiles/${userId}`)
                 })
-                    .then(() => {
-                        let userId = parseInt(localStorage.getItem("capstone_user"), 10)
-                        props.history.push(`/bandProfiles/${userId}`)
-                    })
-            } else {
-                editUser({
-                    email: user.email,
-                    password: user.password,
-                    username: user.username,
-                    userType: user.userType,
-                    name: bandName.current.value,
-                    size: bandSize.current.value,
-                    city: bandCity.current.value,
-                    state: bandState.current.value,
-                    website: bandWebsite.current.value,
-                    bandcamp: bandBandcamp.current.value,
-                    youtube: bandYoutube.current.value,
-                    facebook: bandFacebook.current.value,
-                    instagram: bandInstagram.current.value,
-                    twitter: bandTwitter.current.value,
-                    spotify: bandSpotify.current.value,
-                    webPublic: webPublic,
-                    blurb: bandBlurb.current.value,
-                    blurbPublic: blurbPublic,
-                    address2: "",
-                    address2Public: "",
-                    zip: "",
-                    zipPublic: "",
-                    facebook: "",
-                    instagram: "",
-                    capacity: "",
-                    allAges: "",
-                    address: "",
-                    addressPublic: ""
+        } else {
+            editUser({
+                email: user.email,
+                password: user.password,
+                username: user.username,
+                userType: user.userType,
+                name: bandName.current.value,
+                size: bandSize.current.value,
+                city: bandCity.current.value,
+                state: bandState.current.value,
+                website: bandWebsite.current.value,
+                bandcamp: bandBandcamp.current.value,
+                youtube: bandYoutube.current.value,
+                facebook: bandFacebook.current.value,
+                instagram: bandInstagram.current.value,
+                twitter: bandTwitter.current.value,
+                spotify: bandSpotify.current.value,
+                webPublic: webPublic,
+                blurb: bandBlurb.current.value,
+                blurbPublic: blurbPublic,
+                address2: "",
+                address2Public: "",
+                zip: "",
+                zipPublic: "",
+                facebook: "",
+                instagram: "",
+                capacity: "",
+                allAges: "",
+                address: "",
+                addressPublic: ""
+            })
+                .then(() => {
+                    let userId = parseInt(localStorage.getItem("capstone_user"), 10)
+                    localStorage.setItem("profile", "set")
+                    props.history.push(`/bandProfiles/${userId}`)
                 })
-                    .then(() => {
-                        let userId = parseInt(localStorage.getItem("capstone_user"), 10)
-                        localStorage.setItem("profile", "set")
-                        props.history.push(`/bandProfiles/${userId}`)
-                    })
         }
     }
 
-    
+
 
     return (
         <form className="bandProfileForm">
@@ -235,20 +235,20 @@ export default props => {
                 </div>
                 <fieldset className="bandProfileFieldset">
                     <div className="form-group">
-                    <legend>Make it public?</legend>
-                    <label for="yes"> 
-                        <input type="radio" name="yes" value="true" onChange={() => {
-                            let truth = true
-                            setWebPublic(truth)
-                        }}/>
-                        Yes 
+                        <legend>Make it public?</legend>
+                        <label for="yes">
+                            <input type="radio" name="yes" value="true" onChange={() => {
+                                let truth = true
+                                setWebPublic(truth)
+                            }} />
+                            Yes
                     </label>
-                    <label for="no"> 
-                        <input type="radio" name="no" value="false" checked={true} onChange={() => {
-                            let falseness = false
-                            setWebPublic(falseness)
-                        }}/>
-                        No 
+                        <label for="no">
+                            <input type="radio" name="no" value="false" checked={true} onChange={() => {
+                                let falseness = false
+                                setWebPublic(falseness)
+                            }} />
+                            No
                     </label>
                     </div>
                 </fieldset>
@@ -262,19 +262,19 @@ export default props => {
                     <fieldset className="bandProfileFieldset">
                         <div className="form-group">
                             <legend>Make it public?</legend>
-                            <label for="yes"> 
+                            <label for="yes">
                                 <input type="radio" name="blurbPublic" value="true" onChange={() => {
                                     let truth = true
                                     setBlurbPublic(truth)
-                                }}/>
-                                Yes 
+                                }} />
+                                Yes
                             </label>
-                            <label for="no"> 
+                            <label for="no">
                                 <input type="radio" name="blurbPublic" value="false" checked={true} onChange={() => {
                                     let falseness = false
                                     setBlurbPublic(falseness)
-                                }}/>
-                                No 
+                                }} />
+                                No
                             </label>
                         </div>
                     </fieldset>
