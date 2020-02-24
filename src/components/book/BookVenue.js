@@ -6,12 +6,13 @@ import "./Book.css"
 import 'react-infinite-calendar/styles.css'; // only needs to be imported once
 
 
-export default props => {
+export default (props) => {
 
     const { users } = useContext(UserContext)
 
+    console.log(users)
+
     let today = new Date()
-    debugger
 
     let pathName = props.location.pathname
     
@@ -19,7 +20,7 @@ export default props => {
 
     let userId = parseInt(splitPathName, 10)
 
-    let foundUser = users.find(user => user.id === pathName)
+    let foundUser = users.find(user => user.id === userId)
 
     let venueName = foundUser.name
 
@@ -59,7 +60,7 @@ export default props => {
       
     return (
       <>
-      <h2>Book {foundUser.name}</h2>
+      <h2 className="calendarHeader">Book {foundUser.name}</h2>
         <section className="calendarSection">
             <section>
             <InfiniteCalendar

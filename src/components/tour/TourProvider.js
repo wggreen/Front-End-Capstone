@@ -26,7 +26,6 @@ export const TourProvider = props => {
       },
       body: JSON.stringify(tour)
     })
-    .then(getTours)
   }
 
   const editTour = tour => {

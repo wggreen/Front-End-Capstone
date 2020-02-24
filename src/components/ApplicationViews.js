@@ -11,6 +11,10 @@ import Plan from "./plan/Plan"
 import BookVenue from "./book/BookVenue"
 import { UserProvider } from "./user/UserProvider"
 import { AddressProvider } from "./addresses/AddressProvider"
+import { BookingProvider } from "./book/BookingProvider"
+import { BookingTourProvider } from "./bookingTour/BookingTourProvider"
+import { TourProvider } from "./tour/TourProvider"
+import "./Capstone.css"
 
 
 export default props => {
@@ -28,15 +32,28 @@ export default props => {
             exact
             path="/"
             render={props => {
-              return (
-                <>
-                  <section className="landingPageContainer">
-                      <div>
-                          <p>Hello World</p>
-                      </div>
-                  </section>
-                </>
-              );
+              if (localStorage.getItem("capstone_user") === null) {
+                return (
+                  <>
+                    <section className="landingPageContainer">
+                        <div>
+                            <p>Hello World</p>
+                        </div>
+                    </section>
+                  </>
+                );
+              }
+              else {
+                return (
+                  <>
+                    <section className="landingPageContainer">
+                        <div>
+                            <h1>Get your ass on the road</h1>
+                        </div>
+                    </section>
+                  </>
+                );
+              }
             }}
           />
           <AddressProvider>
@@ -51,21 +68,27 @@ export default props => {
               <Route path="/createBandProfile/:userId(\d+)" render={
                 props => <BandProfileForm {...props} />
               } />
-              <Route exact path="/plan" render={props => <Plan {...props} 
-                setTourCards={setTourCards} 
-                tourCards={tourCards} 
-                polylinePath={polylinePath} 
-                setPolylinePath={setPolylinePath}
-                viewStateOfTourCards={viewStateOfTourCards}/>} />
+              <TourProvider>
+                <BookingProvider>
+                  <BookingTourProvider>
+                    <Route exact path="/plan" render={props => <Plan {...props} 
+                      setTourCards={setTourCards} 
+                      tourCards={tourCards} 
+                      polylinePath={polylinePath} 
+                      setPolylinePath={setPolylinePath}
+                      viewStateOfTourCards={viewStateOfTourCards}/>} />
+                  </BookingTourProvider>
+                </BookingProvider>
+              </TourProvider>
 
               <Route exact path="/plan/:userId(\d+)" render={props => <BookVenue {...props} />} />
               <Route path="/createVenueProfile/:userId(\d+)" render={
                 props => <VenueProfileForm {...props} />
               } />
-                <Route exact path="/login" render={props => <Login {...props} />} />
-                <Route exact path="/register" render={props => <Register {...props} />} />
-              </UserProvider>
-            </AddressProvider>
+              <Route exact path="/login" render={props => <Login {...props} />} />
+              <Route exact path="/register" render={props => <Register {...props} />} />
+            </UserProvider>
+          </AddressProvider>
       </>
     );
   };

@@ -320,7 +320,7 @@ export default props => {
             </fieldset>
             <fieldset className="venueProfileFieldset">
                 <label for="state">State</label>
-                <select id="state" name="state" ref={venueState} required autoFocus value={user.state}>
+                <select id="state" name="state" ref={venueState} required autoFocus>
                     <option value="0">Please select a state...</option>
                     <option value="Alabama">Alabama</option>
                     <option value="Alaska">Alaska</option>

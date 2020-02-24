@@ -1,6 +1,7 @@
 import React, { useContext } from "react"
 import { Link } from "react-router-dom"
 import { UserContext } from "../user/UserProvider"
+import "./NavBar.css"
 
 export default (props) => {
 
@@ -13,7 +14,7 @@ export default (props) => {
     if (localStorage.getItem("capstone_user") === null && props.location.pathname == "/") {
         return (
             <ul className="navbar">
-                <h1>Not logged in home nav</h1>
+                {/* <h1>Not logged in home nav</h1> */}
                 <li className="navbar__item active">
                     <Link className="navbar__link" to="/">Home</Link>
                 </li>
@@ -28,7 +29,7 @@ export default (props) => {
     if (localStorage.getItem("capstone_user") === null && props.location.pathname == "/login") {
         return (
             <ul className="navbar">
-                <h1>Not logged in login nav</h1>
+                {/* <h1>Not logged in login nav</h1> */}
                 <li className="navbar__item active">
                     <Link className="navbar__link" to="/">Home</Link>
                 </li>
@@ -40,7 +41,7 @@ export default (props) => {
     if (localStorage.getItem("capstone_user") != null && localStorage.getItem("userType") === "band") {
         return (
             <ul className="navbar">
-                <h1>Band Home nav</h1>
+                {/* <h1>Band Home nav</h1> */}
                 <li className="navbar__item active">
                     <Link className="navbar__link" to="/">Home</Link>
                 </li>
@@ -81,7 +82,7 @@ export default (props) => {
 
         return (
             <ul className="navbar">
-                <h1>Band Profile Form nav</h1>
+                {/* <h1>Band Profile Form nav</h1> */}
                 <li className="navbar__item active">
                     <Link className="navbar__link" to="/" onClick={() => {
                         const confirm = window.confirm("Are you sure you want to leave? You'll have to re-register")
@@ -101,7 +102,7 @@ export default (props) => {
     if (localStorage.getItem("capstone_user") != null && localStorage.getItem("userType") === "band" && props.location.pathname == `/createBandProfile/${userId}`) {
         return (
             <ul className="navbar">
-                <h1>Band Profile nav</h1>
+                {/* <h1>Band Profile nav</h1> */}
                 <li className="navbar__item active">
                     <Link className="navbar__link" to="/">Home</Link>
                 </li>
@@ -139,7 +140,7 @@ export default (props) => {
     if (localStorage.getItem("capstone_user") != null && localStorage.getItem("userType") === "venue" && props.location.pathname != `/createVenueProfile/${userId}`) {
         return (
             <ul className="navbar">
-                <h1>Venue Home nav</h1>
+                {/* <h1>Venue Home nav</h1> */}
                 <li className="navbar__item active">
                     <Link className="navbar__link" to="/">Home</Link>
                 </li>
@@ -173,7 +174,7 @@ export default (props) => {
     if (localStorage.getItem("capstone_user") != null && localStorage.getItem("userType") === "venue" && localStorage.getItem("profile") === "set" && props.location.pathname == `/createVenueProfile/${userId}`) {
         return (
             <ul className="navbar">
-                <h1>Venue Profile nav</h1>
+                {/* <h1>Venue Profile nav</h1> */}
                 <li className="navbar__item active">
                     <Link className="navbar__link" to="/">Home</Link>
                 </li>
@@ -204,7 +205,7 @@ export default (props) => {
     if (localStorage.getItem("capstone_user") != null && props.location.pathname == `/createVenueProfile/${userId}` && localStorage.getItem("userType") === "venue") {
         return (
             <ul className="navbar">
-                <h1>Venue Profile Form nav</h1>
+                {/* <h1>Venue Profile Form nav</h1> */}
                 <li className="navbar__item active">
                     <Link className="navbar__link" to="/" onClick={() => {
                         const confirm = window.confirm("Are you sure you want to leave? You'll have to re-register")

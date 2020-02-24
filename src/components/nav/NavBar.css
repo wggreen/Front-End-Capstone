@@ -1,0 +1,19 @@
+.navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    border: 1px solid black;
+    list-style-type: none;
+}
+
+.navbar__item {
+    margin: 0px 75px 0px 75px;
+    padding: 20px;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+
+.navbar__link {
+    text-decoration: none;
+}

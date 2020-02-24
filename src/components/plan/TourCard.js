@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import { UserContext } from "../user/UserProvider"
 
-export default ({address, history, removeIndex, index, tourCards}) => {
+export default ({address, history, removeIndex}) => {
     const { users } = useContext(UserContext)
 
     let foundVenue = users.find(user => user.name === address.name)
@@ -75,7 +75,7 @@ export default ({address, history, removeIndex, index, tourCards}) => {
         {foundVenueInstagram}
         {foundVenueTwitter}
         <button onClick={() => {
-            removeIndex(index)
+            removeIndex()
         }}>Delete</button>
         <button onClick={() =>{
             history.push(`/plan/${foundVenue.id}`)

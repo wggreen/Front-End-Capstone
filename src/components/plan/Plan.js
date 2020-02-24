@@ -1,47 +1,43 @@
-import React, { useContext, useState, useRef } from "react"
+import React, { useContext, useState, useRef, useEffect } from "react"
 import { withGoogleMap, GoogleMap, Marker, InfoWindow, Polyline } from 'react-google-maps'
+import { TourContext } from "../tour/TourProvider"
+import { BookingContext } from "../book/BookingProvider"
+import { BookingTourContext } from "../bookingTour/BookingTourProvider"
 import { AddressContext } from "../addresses/AddressProvider"
 import TourCard from "./TourCard"
 import "./Plan.css"
 
 export default (props) => {
   const { addresses } = useContext(AddressContext)
-  // const { tours, addTour } = useContext(TourContext)
+  const { tours, deleteTour, addTour, getTours } = useContext(TourContext) || {}
+  const { bookings, deleteBooking, addBooking, getBookings } = useContext(BookingContext) || {}
+  const { bookingsTours, deleteBookingTour, addBookingTour, getBookingsTours } = useContext(BookingTourContext) || {}
+  const [tourNameEntered, setTourNameEntered] = useState(false)
   const [currentTour, setCurrentTour] = useState({})
+  let currentBooking = {}
+  let currentBookingTour = {}
   const tourNameRef = useRef("")
-
-  let tourName = "abc"
 
   let lineSymbol = {
     path: window.google.maps.SymbolPath.FORWARD_CLOSED_ARROW
   }
 
-  console.log("**** COMPONENT SCOPE  ******")
-  console.log(props.tourCards)
-  
   const makeTourCard = (address) => {
-    console.log("**** makeTourCard SCOPE  ******")
+    console.log("**** makeTourCard SCOPE tourCards ******")
     console.log(props.tourCards)
 
-
     const index = props.tourCards.length
-    // let polylinePathCopy = props.polylinePath
-    // polylinePathCopy.push(pathCoordinates)
-    // props.setPolylinePath(polylinePathCopy)
     return <TourCard
-        key={index}
-        address={address}
-        history={props.history}
-        removeIndex={removeIndex}
-        index={index}
-        tourCards={props.tourCards || []}
-      />
+      key={index}
+      address={address}
+      history={props.history}
+      removeIndex={removeIndex}
+    />
   }
-
 
   const PlanMap = withGoogleMap(properties => (
     <GoogleMap google={window.google} defaultCenter={{ lat: 39.5, lng: -98.35 }}
-      defaultZoom={4}>
+      defaultZoom={3}>
       {
         addresses.map(address => {
           // let pathCoordinates = {
@@ -65,13 +61,35 @@ export default (props) => {
                 <InfoWindow
                   key={address.id}>
                   <>
-                    <span>{address.name}</span>
+                    <span className="infoWindowHeader">{address.name}</span>
                     <div>
-                      <button onClick={() => {
+                      <button className="addTourButton" onClick={event => {
+                        event.preventDefault()
                         let newTourCard = makeTourCard(address)
                         let newCardArray = props.tourCards.slice()
                         newCardArray.push(newTourCard)
                         props.setTourCards(newCardArray)
+                        addBooking(constructNewBooking(address))
+
+                          .then((createdBooking) => createdBooking.json())
+
+                          .then(createdBooking => {
+                            currentBooking = createdBooking
+                            return createdBooking
+                          })
+
+                          .then((createdBooking) => {
+                            addBookingTour(constructNewBookingTour(createdBooking))
+
+                              .then((createdBookingTour) => {
+                                currentBookingTour = createdBookingTour
+                                return createdBookingTour
+                              })
+
+                            return createdBooking
+
+                          })
+
                       }}
                       >
                         Add to tour
@@ -103,18 +121,70 @@ export default (props) => {
     </GoogleMap>
   ));
 
-  const removeIndex = (index) => {
+  const removeIndex = () => {
+    debugger
     let holdingArray = props.tourCards.slice()
-    // holdingArray.splice(index, 1)
     props.setTourCards(holdingArray)
+    if (holdingArray.length > 0) {
+      deleteBooking(currentBooking)
+        .then(() => getBookings())
+        .then(() => {
+          let foundBookingTour = bookingsTours.find(bookingTour => bookingTour.bookingId === currentBooking.id)
+          deleteBookingTour(foundBookingTour)
+        })
+    }
   }
 
+  const constructNewBooking = (address) => {
+    let newBooking = {
+      bandId: parseInt(localStorage.getItem("capstone_user"), 10),
+      venueId: address.id,
+      name: address.name
+    }
+    return newBooking
+  }
 
+  const constructNewBookingTour = (currentBooking) => {
+    let newBookingTour = {
+      bandId: parseInt(localStorage.getItem("capstone_user"), 10),
+      venueId: currentBooking.venueId,
+      bookingId: currentBooking.id,
+      tourId: currentTour.id,
+      bookingName: currentBooking.name,
+      tourName: currentTour.name
+    }
+    return newBookingTour
+  }
+
+  const clearTour = () => {
+    let foundTour = tours.find(tour => tour.name === currentTour.name)
+    deleteTour(foundTour)
+    let relatedBookingTours = []
+    let relatedBookings = []
+    bookingsTours.map(bookingTour => {
+      if (bookingTour.tourId === foundTour.id) {
+        relatedBookingTours.push(bookingTour)
+      }
+    })
+    relatedBookingTours.map(relatedBookingTour => {
+      bookings.map(booking => {
+        if (booking.id === relatedBookingTour.bookingId) {
+          relatedBookings.push(booking)
+        }
+      })
+    })
+    relatedBookingTours.map(relatedBookingTour => {
+      deleteBookingTour(relatedBookingTour)
+    })
+    relatedBookings.map(relatedBooking => {
+      deleteBooking(relatedBooking)
+    })
+  }
 
   return (
     <>
       <section className="planSection">
-        <div>
+        <div className="mapSection">
           <PlanMap
             loadingElement={<div style={{ height: `100%` }} />}
             containerElement={<div style={{ height: `400px`, width: `400px` }} />}
@@ -122,37 +192,73 @@ export default (props) => {
           />
         </div>
         <section className="tourSection">
-          {tourName ? ("") : (
-          <>
-            <form>
-              <fieldset>
-                <div>
-                  <label htmlFor="tourName">Tour name: </label>
-                  <input 
-                      type="text" 
-                      name="tourName"
-                      ref={tourNameRef}
-                      required 
-                      autoFocus/>
-                </div>
-              </fieldset>
-              <section>
-              <button id="eventFormSubmitButton" type="submit"
-                    onClick={evt => {
-                        evt.preventDefault()
-                        // constructNewTour()
-                    }}
-                    className="btn btn-primary">
-                    {/* {editMode ? "Save Edit" : "Save Event"} */}
-                </button>
+          {tourNameEntered ? (
+            <>
+              <h2>{currentTour.name}</h2>
+              <section className="tourButtonSection">
+                <button onClick={() => {
+                  if (props.tourCards.length === 0) {
+                    window.alert("Your tour is empty")
+                  } else {
+                    clearTour()
+                    props.setTourCards("")
+                    let foundTour = tours.find(tour => tour.name === currentTour.name)
+                    foundTour.saved = true
+                    setTourNameEntered(false)
+                  }
+                }}>
+                  Save tour
+              </button>
+                <button onClick={() => {
+                  if (props.tourCards.length === 0) {
+                    window.alert("Your tour is empty")
+                  } else {
+                    clearTour()
+                    props.setTourCards("")
+                  }
+                }}>Clear tour</button>
               </section>
-            </form>
+              {props.tourCards}
             </>
+          ) : (
+              <>
+                <form>
+                  <fieldset>
+                    <div>
+                      <label htmlFor="tourName">Tour name: </label>
+                      <input
+                        type="text"
+                        name="tourName"
+                        ref={tourNameRef}
+                        required
+                        autoFocus />
+                    </div>
+                  </fieldset>
+                  <section>
+                    <button id="eventFormSubmitButton" type="submit"
+                      onClick={evt => {
+                        evt.preventDefault()
+                        setTourNameEntered(true)
+                        let newTour =
+                        {
+                          bandId: parseInt(localStorage.getItem("capstone_user"), 10),
+                          name: tourNameRef.current.value,
+                          saved: false
+                        }
+                        addTour(newTour)
+                          .then((createdTour) => createdTour.json())
+                          .then((createdTour) => {
+                            setCurrentTour(createdTour) 
+                            return createdTour
+                          })
+                      }}
+                      className="btn btn-primary">
+                      {/* {editMode ? "Save Edit" : "Save Event"} */}
+                      Submit</button>
+                  </section>
+                </form>
+              </>
             )}
-          <button onClick={() => {
-            props.setTourCards("")
-          }}>Clear tour</button>
-          {props.tourCards}
         </section>
       </section>
     </>

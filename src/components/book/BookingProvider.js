@@ -25,11 +25,10 @@ export const BookingProvider = props => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(booking)
-    })
-    .then(getBookings)
+    })  
   }
 
-  const editBooking = Booking => {
+  const editBooking = booking => {
     return fetch(`http://localhost:8088/bookings/${booking.id}`, {
       method: "PUT",
       headers: {
@@ -45,7 +44,7 @@ export const BookingProvider = props => {
   }, []);
 
   useEffect(() => {
-    console.log("***BookingS APP STATE CHANGED");
+    console.log("***BOOKINGS APP STATE CHANGED");
   }, [bookings]);
 
   return (
