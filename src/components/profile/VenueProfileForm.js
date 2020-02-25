@@ -25,21 +25,8 @@ export default props => {
     const [zipPublic, setZipPublic] = useState()
     const [webPublic, setWebPublic] = useState()
     const [blurbPublic, setBlurbPublic] = useState()
-
-    console.log(users)
     
-
     const editMode = props.match.params.hasOwnProperty("userId")
-
-    // const handleControlledInputChange = (event) => {
-    //     /*
-    //         When changing a state object or array, always create a new one
-    //         and change state instead of modifying current one
-    //     */
-    //     const newProfile = Object.assign({}, profile)
-    //     newProfile[event.target.name] = event.target.value
-    //     setProfile(newProfile)
-    // }
 
     const setDefaults = () => {
         if (editMode) {
@@ -125,7 +112,6 @@ export default props => {
                     })
                 }
              if (editMode && localStorage.getItem("profile") != "set") {
-                 console.log(user)
                  
                 editUser({
                     email: user.email,
@@ -157,8 +143,6 @@ export default props => {
                     spotify: ""
                 })
                 .then(() => {
-                    console.log(users)
-                    
                     let address = {
                         address: venueAddress.current.value,
                         addressPublic: addressPublic,
@@ -326,7 +310,7 @@ export default props => {
             </fieldset>
             <fieldset className="venueProfileFieldset">
                 <label for="state">State</label>
-                <select id="state" name="state" ref={venueState} required autoFocus value={user.state}>
+                <select id="state" name="state" ref={venueState} required autoFocus>
                     <option value="0">Please select a state...</option>
                     <option value="Alabama">Alabama</option>
                     <option value="Alaska">Alaska</option>

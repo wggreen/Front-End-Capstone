@@ -68,11 +68,11 @@ export default (props) => {
 
     return (
         <section className="banduser">
-            <h3 className="band__name"> { user.name } </h3>
-            <div className="band__size"> Size: { user.size } </div>
+            <h2 className="band__name"> { user.name } </h2>
+            <div className="band__size"> Number of members: { user.size } </div>
             <div className="band__fullAddress">
-                <div className="band__city"> { user.city } </div>
-                <div className="band__state"> { user.state } </div>
+                <div className="band__city"> { user.city },  </div>
+                <div className="band__state">  { user.state } </div>
             </div>
             <div className="band_web">
                 {bandWebsite}
@@ -84,7 +84,7 @@ export default (props) => {
                 {bandYoutube}
             </div>
             {bandBlurb}
-            <button onClick={() => {
+            <button className="createProfileButton" onClick={() => {
                 props.history.push(`/createBandProfile/${chosenUserId}`)
             }}>Edit Profile</button>
         </section>

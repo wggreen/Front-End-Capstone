@@ -4,10 +4,6 @@ import { UserContext } from "../user/UserProvider"
 export default (props) => {
     const { users } = useContext(UserContext)
 
-    /*
-        This line of code will be explained in the next
-        section of the chapter.
-    */
     const chosenUserId = parseInt(props.match.params.userId, 10)
 
     const user = users.find(user => user.id === chosenUserId) || {}
@@ -95,8 +91,8 @@ export default (props) => {
             <div className="venue__fullAddress">
                 {venueAddress}
                 {venueAddress2}
-                <div className="venue__city"> { user.city } </div>
-                <div className="venue__state"> { user.state } </div>
+                <div className="venue__city"> { user.city },  </div>
+                <div className="venue__state">  { user.state } </div>
                 {venueZip}
             </div>
             <div className="venue_web">

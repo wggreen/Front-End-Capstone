@@ -1,6 +1,22 @@
-.landingPageContainer {
+.calendarSection {
+    display: flex;
+    flex-direction: row;
+}
+
+.potentialDates {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+
+.potentialDates__header{
+    margin-top: 0px;
+}
+
+.calendarHeader{
     text-align: center;
-    font-size: 20px;
+    text-decoration: underline;
+    font-size: 35px;
     animation-name: blackWhite;  
     animation-iteration-count: infinite;  
     animation-duration: 2s; 

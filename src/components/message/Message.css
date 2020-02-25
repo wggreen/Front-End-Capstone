@@ -1,0 +1,107 @@
+.messageSection {
+    display: flex;
+    flex-direction: row;
+}
+
+.messageSection__buttons {
+    display: flex;
+    flex-direction: column;
+    margin-right: 250px;
+}
+
+.messageSection_button {
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    font-size: large;
+}
+
+.inbox_img {
+    max-width: 25%;
+    height: auto;
+    vertical-align: middle;
+}
+
+.sent_img {
+    max-width: 25%;
+    height: auto;
+    vertical-align: middle;
+}
+
+.messagePreview {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.messagePreview div {
+    margin: 10px;
+}
+
+.fullMessage {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: center;
+    max-width: 100%;
+}
+
+.messageHeaders {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 50px;
+}
+
+.messageHeader__sender {
+    margin-right: 150px;
+    font-weight: 600;
+    font-size: large;
+}
+
+.messageText {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.messageBody {
+    padding: 20px;
+    margin-bottom: 40px;
+    justify-content: left;
+    align-items: left;
+    display: flex;
+    flex-direction: column;
+    background-color: #F6F6F6
+}
+
+.replyFieldset {
+    border: none;
+}
+
+h1 {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    font-size: xx-large;
+}
+
+.messagePreviewList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.messageView {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 150px;
+}

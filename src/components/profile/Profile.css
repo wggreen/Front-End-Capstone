@@ -83,3 +83,24 @@
     flex-direction: column;
     align-items: center;
 }
+
+.band__fullAddress {
+    display: flex;
+    flex-direction: row;
+}
+
+.venue__fullAddress {
+    display: flex;
+    flex-direction: row;
+}
+
+.banduser {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.createProfileButton {
+    margin-top: 20px;
+}
