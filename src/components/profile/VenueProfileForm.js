@@ -28,16 +28,6 @@ export default props => {
     
     const editMode = props.match.params.hasOwnProperty("userId")
 
-    // const handleControlledInputChange = (event) => {
-    //     /*
-    //         When changing a state object or array, always create a new one
-    //         and change state instead of modifying current one
-    //     */
-    //     const newProfile = Object.assign({}, profile)
-    //     newProfile[event.target.name] = event.target.value
-    //     setProfile(newProfile)
-    // }
-
     const setDefaults = () => {
         if (editMode) {
             const userId = parseInt(props.match.params.userId)

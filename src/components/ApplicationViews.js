@@ -9,12 +9,17 @@ import VenueProfileForm from "./profile/VenueProfileForm"
 import NavBar from "./nav/NavBar"
 import Plan from "./plan/Plan"
 import BookVenue from "./book/BookVenue"
+import Messages from "./message/Messages"
+import MessageDetail from "./message/MessageDetail"
+import Tours from "./tour/Tours"
 import { UserProvider } from "./user/UserProvider"
 import { AddressProvider } from "./addresses/AddressProvider"
 import { BookingProvider } from "./book/BookingProvider"
 import { BookingTourProvider } from "./bookingTour/BookingTourProvider"
 import { TourProvider } from "./tour/TourProvider"
 import { MessageProvider } from "./message/MessageProvider"
+import { ConversationProvider } from "./conversations/ConversationProvider"
+import { ConversationMessageProvider } from "./conversationMessage/ConversationMessageProvider"
 import "./Capstone.css"
 
 
@@ -25,11 +30,7 @@ export default props => {
   const [currentBooking, setCurrentBooking] = useState({})
   const [currentBookingTour, setCurrentBookingTour] = useState({})
   const [tourNameEntered, setTourNameEntered] = useState(false)
-
-
-  const viewStateOfTourCards = () => {
-    console.log(tourCards)
-  }
+  const [inboxView, setInboxView] = useState(true)
 
   return (
     <>
@@ -53,7 +54,7 @@ export default props => {
               <>
                 <section className="landingPageContainer">
                   <div>
-                    <h1>Get your ass on the road</h1>
+                    <h1>Hit the road!</h1>
                   </div>
                 </section>
               </>
@@ -87,16 +88,27 @@ export default props => {
                   setCurrentBookingTour={setCurrentBookingTour}
                   tourNameEntered={tourNameEntered}
                   setTourNameEntered={setTourNameEntered} />} />
+                <Route exact path="/tours" render={props => <Tours {...props} />} />
               </BookingTourProvider>
             </BookingProvider>
           </TourProvider>
           <MessageProvider>
-            <Route exact path="/plan/:userId(\d+)" render={props => <BookVenue {...props}
-              tourCards={tourCards}
-              currentTour={currentTour}
-              currentBooking={currentBooking}
-              currentBookingTour={currentBookingTour}
-              tourNameEntered={tourNameEntered} />} />
+            <ConversationProvider>
+              <ConversationMessageProvider>
+                <Route exact path="/plan/:userId(\d+)" render={props => <BookVenue {...props}
+                  tourCards={tourCards}
+                  currentTour={currentTour}
+                  currentBooking={currentBooking}
+                  currentBookingTour={currentBookingTour}
+                  tourNameEntered={tourNameEntered} />} />
+                <Route exact path="/messages" render={props => <Messages {...props}
+                  inboxView={inboxView}
+                  setInboxView={setInboxView} />} />
+                <Route exact path="/messages/:messageId(\d+)" render={props => <MessageDetail {...props}
+                  inboxView={inboxView}
+                  setInboxView={setInboxView} />} />
+              </ConversationMessageProvider>
+            </ConversationProvider>
           </MessageProvider>
           <Route path="/createVenueProfile/:userId(\d+)" render={
             props => <VenueProfileForm {...props} />

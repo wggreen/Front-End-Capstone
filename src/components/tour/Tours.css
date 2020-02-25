@@ -1,0 +1,27 @@
+.tours {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.bookingsList {
+    list-style-type: none;
+    padding-left: 0px;
+    margin-top: 0px;
+}
+
+h2 {
+    text-decoration: underline;
+}
+
+.individualTour {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed red;
+    width: 50%
+}

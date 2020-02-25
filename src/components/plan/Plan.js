@@ -9,7 +9,7 @@ import "./Plan.css"
 
 export default (props) => {
   const { addresses } = useContext(AddressContext)
-  const { tours, deleteTour, addTour, getTours } = useContext(TourContext) || {}
+  const { tours, deleteTour, addTour, editTour, getTours } = useContext(TourContext) || {}
   const { bookings, deleteBooking, addBooking, getBookings } = useContext(BookingContext) || {}
   const { bookingsTours, deleteBookingTour, addBookingTour, getBookingsTours } = useContext(BookingTourContext) || {}
 
@@ -49,11 +49,6 @@ export default (props) => {
                   lat: address.address.lat,
                   lng: address.address.lng
                 }}
-                label={{
-                  text: "Hello World!",
-                  fontFamily: "Arial",
-                  fontSize: "14px",
-                }}
               >
                 <InfoWindow
                   key={address.id}>
@@ -62,30 +57,33 @@ export default (props) => {
                     <div>
                       <button className="addTourButton" onClick={event => {
                         event.preventDefault()
-                        let newTourCard = makeTourCard(address)
-                        let newCardArray = props.tourCards.slice()
-                        newCardArray.push(newTourCard)
-                        props.setTourCards(newCardArray)
-                        addBooking(constructNewBooking(address))
+                        if (props.tourNameEntered === true) {
+                          let newTourCard = makeTourCard(address)
+                          let newCardArray = props.tourCards.slice()
+                          newCardArray.push(newTourCard)
+                          props.setTourCards(newCardArray)
+                          addBooking(constructNewBooking(address))
 
-                          .then((createdBooking) => createdBooking.json())
+                            .then((createdBooking) => createdBooking.json())
 
-                          .then(createdBooking => {
-                            props.setCurrentBooking(createdBooking)
-                            return createdBooking
-                          })
+                            .then(createdBooking => {
+                              props.setCurrentBooking(createdBooking)
+                              return createdBooking
+                            })
 
-                          .then((createdBooking) => {
-                            addBookingTour(constructNewBookingTour(createdBooking))
+                            .then((createdBooking) => {
+                              addBookingTour(constructNewBookingTour(createdBooking))
 
-                              .then((createdBookingTour) => {
-                                props.setCurrentBooking(createdBookingTour)
-                                return createdBookingTour
-                              })
+                                .then((createdBookingTour) => {
+                                  props.setCurrentBooking(createdBookingTour)
+                                  return createdBookingTour
+                                })
 
-                            return createdBooking
-
-                          })
+                              return createdBooking
+                            })
+                        } else {
+                          window.alert("Please enter a tour name")
+                        }
 
                       }}
                       >
@@ -119,7 +117,6 @@ export default (props) => {
   ));
 
   const removeIndex = () => {
-    debugger
     let holdingArray = props.tourCards.slice()
     props.setTourCards(holdingArray)
     if (holdingArray.length > 0) {
@@ -142,9 +139,7 @@ export default (props) => {
     addTour(newTour)
       .then((createdTour) => createdTour.json())
       .then((createdTour) => {
-        debugger
         props.setCurrentTour(createdTour)
-        debugger
         props.setTourNameEntered(true)
       })
   }
@@ -161,10 +156,10 @@ export default (props) => {
   const constructNewBookingTour = (currentBooking) => {
     let newBookingTour = {
       bandId: parseInt(localStorage.getItem("capstone_user"), 10),
-      venueId: props.currentBooking.venueId,
-      bookingId: props.currentBooking.id,
+      venueId: currentBooking.venueId,
+      bookingId: currentBooking.id,
       tourId: props.currentTour.id,
-      bookingName: props.currentBooking.name,
+      bookingName: currentBooking.name,
       tourName: props.currentTour.name
     }
     return newBookingTour
@@ -214,11 +209,13 @@ export default (props) => {
                   if (props.tourCards.length === 0) {
                     window.alert("Your tour is empty")
                   } else {
-                    clearTour()
                     props.setTourCards("")
-                    let foundTour = tours.find(tour => tour.name === props.currentTour.name)
-                    foundTour.saved = true
-                    props.setTourNameEntered(false)
+                    let currentTourEdited = props.currentTour
+                    currentTourEdited.saved = true
+                    editTour(currentTourEdited)
+                      .then(() => {
+                        props.setTourNameEntered(false)
+                      })
                   }
                 }}>
                   Save tour

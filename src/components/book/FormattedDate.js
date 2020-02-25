@@ -7,10 +7,6 @@ export default ({date, props, index, removeIndex}) => {
     <>
     <div className="dateCard" key={date}>
         <h2>{date}</h2>
-        {/* <button onClick={() => {
-          debugger
-            removeIndex(index)
-        }}>Delete</button> */}
     </div>
     </>
   );

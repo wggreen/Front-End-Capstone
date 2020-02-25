@@ -1,68 +1,315 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# React- Nutshell
 
-## Available Scripts
+Hit the Road is a travel planning and messaging application designed for bands and musiv venues.
 
-In the project directory, you can run:
+## Installation
 
-### `npm start`
+Install react packages:
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```bash
+npx create-react-app 
+npm i --save react-router-dom
+npm install react-google-maps
+npm install react-infinite-calendar
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+npm start from the root directory to run application
+```
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+## Features / Functionality
+1. Login/register as a new user
+1. Choose from two different types of users (band/venue)
+1. Create a profile, and selectively make some of it public
+1. Edit a profile (band/venue)
+1. Build Tour from Google Map of music venues (band)
+1. Use calendar to send booking inquiries as private messages to venues (band)
+1. Reply to messages (band/venue)
+1. View saved tours
+1. State of draft tours saved across pages
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Database sample
+Run a json server watching database.json on port 8088
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+```JSON
+{
+  "users": [
+    {
+      "email": "nss@gmail.com",
+      "password": "123",
+      "username": "NSS",
+      "userType": "venue",
+      "id": 1,
+      "name": "NSS",
+      "capacity": "100",
+      "address": "",
+      "city": "Nashville",
+      "state": "Tennessee",
+      "address2": "",
+      "zip": "",
+      "website": "",
+      "facebook": "",
+      "instagram": "",
+      "twitter": "",
+      "blurb": "",
+      "size": "",
+      "bandcamp": "",
+      "youtube": "",
+      "spotify": ""
+    },
+    {
+      "email": "msg@me.com",
+      "password": "123",
+      "username": "msg",
+      "userType": "venue",
+      "id": 2,
+      "name": "Madison Square Garden",
+      "capacity": "20000",
+      "address": "",
+      "city": "New York",
+      "state": "New York",
+      "address2": "",
+      "zip": "",
+      "website": "",
+      "facebook": "",
+      "instagram": "",
+      "twitter": "",
+      "blurb": "",
+      "size": "",
+      "bandcamp": "",
+      "youtube": "",
+      "spotify": ""
+    },
+    {
+      "email": "coachella@me.com",
+      "password": "123",
+      "username": "coachella",
+      "userType": "venue",
+      "id": 3,
+      "name": "Coachella",
+      "capacity": "100000",
+      "address": "",
+      "city": "Indio",
+      "state": "California",
+      "address2": "",
+      "zip": "",
+      "website": "",
+      "facebook": "",
+      "instagram": "",
+      "twitter": "",
+      "blurb": "",
+      "size": "",
+      "bandcamp": "",
+      "youtube": "",
+      "spotify": ""
+    },
+    {
+      "email": "acl@me.com",
+      "password": "123",
+      "username": "acl",
+      "userType": "venue",
+      "id": 4,
+      "name": "Austin City Limits",
+      "capacity": "2750",
+      "address": "",
+      "city": "Austin",
+      "state": "Texas",
+      "address2": "",
+      "zip": "",
+      "website": "",
+      "facebook": "",
+      "instagram": "",
+      "twitter": "",
+      "blurb": "",
+      "size": "",
+      "bandcamp": "",
+      "youtube": "",
+      "spotify": ""
+    },
+    {
+      "email": "disneyworld@me.com",
+      "password": "123",
+      "username": "disneyworld",
+      "userType": "venue",
+      "id": 5,
+      "name": "Disney World",
+      "capacity": "100000",
+      "address": "",
+      "city": "Orlando",
+      "state": "Florida",
+      "address2": "",
+      "zip": "",
+      "website": "",
+      "facebook": "",
+      "instagram": "",
+      "twitter": "",
+      "blurb": "",
+      "size": "",
+      "bandcamp": "",
+      "youtube": "",
+      "spotify": ""
+    },
+    {
+      "email": "cohort37@me.com",
+      "password": "123",
+      "username": "cohort37",
+      "userType": "band",
+      "id": 6,
+      "name": "Cohort 37",
+      "size": "25",
+      "city": "Nashville",
+      "state": "Tennessee",
+      "website": "",
+      "bandcamp": "",
+      "youtube": "",
+      "facebook": "",
+      "instagram": "",
+      "twitter": "",
+      "spotify": "",
+      "blurb": "",
+      "address2": "",
+      "address2Public": "",
+      "zip": "",
+      "zipPublic": "",
+      "capacity": "",
+      "allAges": "",
+      "address": "",
+      "addressPublic": ""
+    }
+  ],
+  "messages": [],
+  "conversations": [],
+  "conversationsMessages": [],
+  "tours": [
+    {
+      "bandId": 6,
+      "name": "My Big Break Tour",
+      "saved": true,
+      "id": 1
+    },
+    {
+      "bandId": 6,
+      "name": "My 1 Stop Tour",
+      "saved": true,
+      "id": 2
+    }
+  ],
+  "bookings": [
+    {
+      "bandId": 6,
+      "venueId": 3,
+      "name": "Coachella",
+      "id": 1
+    },
+    {
+      "bandId": 6,
+      "venueId": 5,
+      "name": "Disney World",
+      "id": 2
+    },
+    {
+      "bandId": 6,
+      "venueId": 2,
+      "name": "Madison Square Garden",
+      "id": 3
+    },
+    {
+      "bandId": 6,
+      "venueId": 2,
+      "name": "Madison Square Garden",
+      "id": 4
+    }
+  ],
+  "bookingsTours": [
+    {
+      "bandId": 6,
+      "venueId": 3,
+      "bookingId": 1,
+      "tourId": 1,
+      "bookingName": "Coachella",
+      "tourName": "My Big Break Tour",
+      "id": 1
+    },
+    {
+      "bandId": 6,
+      "venueId": 5,
+      "bookingId": 2,
+      "tourId": 1,
+      "bookingName": "Disney World",
+      "tourName": "My Big Break Tour",
+      "id": 2
+    },
+    {
+      "bandId": 6,
+      "venueId": 2,
+      "bookingId": 3,
+      "tourId": 1,
+      "bookingName": "Madison Square Garden",
+      "tourName": "My Big Break Tour",
+      "id": 3
+    },
+    {
+      "bandId": 6,
+      "venueId": 2,
+      "bookingId": 4,
+      "tourId": 2,
+      "bookingName": "Madison Square Garden",
+      "tourName": "My 1 Stop Tour",
+      "id": 4
+    }
+  ],
+  "addresses": [
+    {
+      "userId": 1,
+      "name": "NSS",
+      "address": {
+        "lat": 36.1626638,
+        "lng": -86.7816016
+      },
+      "id": 1
+    },
+    {
+      "userId": 2,
+      "name": "Madison Square Garden",
+      "address": {
+        "lat": 40.650732,
+        "lng": -73.946412
+      },
+      "id": 2
+    },
+    {
+      "userId": 3,
+      "name": "Coachella",
+      "address": {
+        "lat": 33.7205771,
+        "lng": -116.2155619
+      },
+      "id": 3
+    },
+    {
+      "userId": 4,
+      "name": "Austin City Limits",
+      "address": {
+        "lat": 30.267153,
+        "lng": -97.7430608
+      },
+      "id": 4
+    },
+    {
+      "userId": 5,
+      "name": "Disney World",
+      "address": {
+        "lat": 28.5383355,
+        "lng": -81.3792365
+      },
+      "id": 5
+    }
+  ]
+}
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Authors
+William Green
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+## Thank You's
+[NSS](http://nashvillesoftwareschool.com/)

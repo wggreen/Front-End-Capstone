@@ -26,7 +26,6 @@ export const MessageProvider = props => {
       },
       body: JSON.stringify(message)
     })
-    .then(getMessages)
   }
 
   const editMessage = message => {

@@ -3,29 +3,34 @@ import InfiniteCalendar, { withMultipleDates, Calendar, defaultMultipleDateInter
 import FormattedDate from "./FormattedDate"
 import { UserContext } from "../user/UserProvider"
 import { MessageContext } from "../message/MessageProvider"
+import { ConversationContext } from "../conversations/ConversationProvider"
+import { ConversationMessageContext } from "../conversationMessage/ConversationMessageProvider"
 import "./Book.css"
 import 'react-infinite-calendar/styles.css'; // only needs to be imported once
+import { add } from "date-fns";
 
 
 export default (props) => {
 
   const { users } = useContext(UserContext)
   const { addMessage } = useContext(MessageContext)
-
-  console.log(users)
+  const { addConversation } = useContext(ConversationContext)
+  const { addConversationMessage } = useContext(ConversationMessageContext)
 
   let today = new Date()
   let pathName = props.location.pathname
   let splitPathName = pathName.split("/")[2]
   let userId = parseInt(splitPathName, 10)
-  let foundVenue = users.find(user => user.id === userId)
-  let foundBand = users.find(user => user.id === parseInt(localStorage.getItem("capstone_user"), 10))
+  let venue = users.find(user => user.id === userId)
+  let band = users.find(user => user.id === parseInt(localStorage.getItem("capstone_user"), 10))
 
   const [selectedDates, setSelectedDates] = useState([])
   const [formattedDates, setFormattedDates] = useState([])
   const [formattedDatesArray, setFormattedDatesArray] = useState([])
   const [dateCards, setDateCards] = useState([])
   const [saveDatesButtonEntered, setSaveDatesButtonEntered] = useState(false)
+  const [foundVenue, setFoundVenue] = useState(venue)
+  const [foundBand, setfoundBand] = useState(band)
 
   const message = useRef("")
 
@@ -60,6 +65,46 @@ export default (props) => {
       removeIndex={removeIndex} />]
   }
 
+  const constructNewConversation = (message) => {
+    let newConversation = {
+      originalSenderBand: message.senderId,
+      originalVenueRecipient: message.recipientId
+    }
+    addConversation(newConversation)
+      .then((createdConversation) => createdConversation.json())
+      .then((createdConversation) => {
+        let newConversationMessage = {
+          messageId: message.id,
+          conversationId: createdConversation.id
+        }
+        addConversationMessage(newConversationMessage)
+      })
+  }
+
+  const constructNewMessage = () => {
+    let newMessage = {
+      senderId: foundBand.id,
+      recipientId: foundVenue.id,
+      senderName: foundBand.name,
+      recipientName: foundVenue.name,
+      dates: formattedDatesArray,
+      message: message.current.value,
+      unformattedTimeStamp: new Date(),
+      timestamp: new Date().toLocaleString("en-US", { timeZone: "America/Chicago" }),
+      sender: "band"
+    }
+    addMessage(newMessage)
+      .then((createdMessage) => createdMessage.json())
+      .then((createdMessage => {
+        setSaveDatesButtonEntered(false)
+        setDateCards([])
+        setFormattedDates([])
+        setFormattedDatesArray([])
+        setSelectedDates([])
+        constructNewConversation(createdMessage)
+      }))
+  }
+
   return (
     <>
       <h2 className="calendarHeader">Book {foundVenue.name}</h2>
@@ -72,7 +117,7 @@ export default (props) => {
               let formattedDate = addToSelectedDates(selectedDate)
               let holdingArray = formattedDatesArray.slice()
               holdingArray.push(formattedDate)
-              holdingArray.sort((a,b) => a-b)
+              holdingArray.sort((a, b) => a - b)
               setFormattedDatesArray(holdingArray)
               let newDateCard = createDateCard(formattedDate)
               let newCardArray = []
@@ -109,30 +154,17 @@ export default (props) => {
                     Dates: {formattedDatesArray.join(", ")}
                   </div>
                 </fieldset>
-                <fielset>
+                <fieldset>
                   <label htmlFor="message"> Message (optional): </label>
                   <textarea name="message" rows="7" cols="40" autoFocus className="form-control"
                     placeholder=""
                     ref={message}
                   />
-                </fielset>
+                </fieldset>
                 <button type="submit"
                   onClick={evt => {
                     evt.preventDefault()
-                    let newMessage = {
-                      bandSenderId: foundBand.id,
-                      venueRecipientId: foundVenue.id,
-                      dates: formattedDatesArray,
-                      message: message.current.value
-                    }
-                    addMessage(newMessage)
-                    .then(() => {
-                      setSaveDatesButtonEntered(false)
-                      setDateCards([])
-                      setFormattedDates([])
-                      setFormattedDatesArray([])
-                      setSelectedDates([])
-                    })
+                    constructNewMessage()
                   }}
                   className="btn btn-primary">
                   Send Message

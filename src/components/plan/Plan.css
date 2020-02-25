@@ -1,8 +1,12 @@
 .planSection {
     display: flex;
     flex-direction: row;
-    margin-top: 60px;
+    margin-top: 30px;
     justify-content: center;
+    background-color: lavender;
+    max-width: 75%;
+    margin-left: 150px;
+    padding: 20px;
 }
 
 .tourSection {
@@ -20,7 +24,7 @@
     margin-top: 10px;
 }
 
-.infoWindowHeader{
+/* .infoWindowHeader{
     animation-name: blackWhite;  
     animation-iteration-count: infinite;  
     animation-duration: 2s; 
@@ -35,7 +39,7 @@
     75% { color: indigo; }
     90% { color: violet; }
     100% { color: reg; }
-  }
+  } */
 
   .mapSection{
       border: 1px solid black;

@@ -6,7 +6,7 @@ export const TourProvider = props => {
   const [tours, setTours] = useState([]);
 
   const getTours = () => {
-    return fetch("http://localhost:8088/tours")
+    return fetch("http://localhost:8088/tours?_embed=bookingsTours")
           .then(res => res.json())
           .then(setTours)
   }

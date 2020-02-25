@@ -5,6 +5,7 @@
     width: 100%;
     border: 1px solid black;
     list-style-type: none;
+    background-color: rgb(224, 246, 255);
 }
 
 .navbar__item {
@@ -12,6 +13,7 @@
     padding: 20px;
     border-left: 1px solid black;
     border-right: 1px solid black;
+    background-color: rgb(187, 255, 187);
 }
 
 .navbar__link {
