@@ -1,6 +1,9 @@
-# React- Nutshell
+# Hit the Road
+![screenshot](src\images\screenshot-capstone.JPG)
 
-Hit the Road is a travel planning and messaging application designed for bands and musiv venues.
+
+
+Hit the Road is a travel planning and messaging application designed for bands and music venues.
 
 ## Installation
 
