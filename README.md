@@ -1,7 +1,5 @@
 # Hit the Road
-![screenshot](src\images\screenshot-capstone.JPG)
-
-
+![screenshot](./src/images/screenshot-capstone.JPG)
 
 Hit the Road is a travel planning and messaging application designed for bands and music venues.
 
