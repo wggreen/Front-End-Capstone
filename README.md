@@ -16,8 +16,11 @@ npm start from the root directory to run application
 ```
 
 Generate a Google Maps API key:
+
 [https://developers.google.com/maps/documentation/javascript/get-api-key](https://developers.google.com/maps/documentation/javascript/get-api-key)
+
 and place it in the first script tag in index.html
+
 ```<script src="https://maps.googleapis.com/maps/api/js?key=APIKEY" ></script>```
 
 
